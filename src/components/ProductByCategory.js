@@ -1,19 +1,22 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, useWindowDimensions } from 'react-native';
 import colors from '../utils/global/colors.js';
 
-const ProductByCategory = ({ item }) => {
+const ProductByCategory = ({ item, selectProductId }) => {
+
+    const { width, height } = useWindowDimensions()
+
     return (
-        <View style={styles.container}>
+        <Pressable style={styles.container} onPress={() => selectProductId(item.id)}>
             <View style={styles.imageSpan}>
-                <Image style={[styles.image, {position: 'absolute'}]} source={{ uri: item.thumbnail }} resizeMode='cover' />
+                <Image style={[styles.image, { position: 'absolute' }]} source={{ uri: item.thumbnail }} resizeMode='cover' />
                 <View style={styles.overlay} />
             </View>
             <View style={styles.productText}>
-                <Text style={styles.text}>Nombre: {item.name}</Text>
-                {item.unit_price ? <Text style={styles.text}>Precio Uni: {item.unit_price} €</Text> : null}
-                <Text style={styles.text}>Precio {item.reference_format}: {item.reference_price} €</Text>
+                <Text style={[styles.text, width > 490 ? { fontSize: 24 } : { fontSize: 16 }]}>Nombre: {item.name}</Text>
+                {item.unit_price ? <Text style={[styles.text, width > 490 ? { fontSize: 24 } : { fontSize: 16 }]}>Precio Uni: {item.unit_price} €</Text> : null}
+                <Text style={[styles.text, width > 490 ? { fontSize: 24 } : { fontSize: 16 }]}>Precio {item.reference_format}: {item.reference_price} €</Text>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
