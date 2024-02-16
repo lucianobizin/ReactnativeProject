@@ -1,9 +1,35 @@
+// Importo componentes de react & react-native
 import { StyleSheet, Text, View, Image, Pressable, useWindowDimensions } from 'react-native';
+
+// Importo objetos globales de estilo de la app --> fuentes y colores
 import colors from '../utils/global/colors.js';
 
+// El componente ProductByCategory recibe item (producto de la categoría elegida por el usuario) y selectProductId (que distingue entre ProductsByCategory y ProductDetail) 
 const ProductByCategory = ({ item, selectProductId }) => {
 
+
+    /* -------------------   ADMINISTRACIÓN DE DIMENSIONES DE PANTALLA   ----------------------------------------------------- */
+    // Declaro variables para trabajar con la posición horizontal y vertical del móvil: 'true': vertical; 'false': horizontal
     const { width, height } = useWindowDimensions()
+
+    /* -------------------   RENDERIZACIÓN DE PRODUCTSBYCATEGORY ------------------------------------------------------------------------------- */
+
+    /* 
+     
+      COMPONENTES / PANTALLAS
+    
+      Pressable: Permite seleccionar un producto (convierte la tarjeta de producto en un pressable).
+      Image: Muestra la imagen de cada producto
+      Header: Define el Header de la pantalla (se le debe pasar style -estilo del texto a mostrar- y title -texto a mostrar-)
+      Search: Permite la búsqueda de productos por palabra clave (keyword) mediante el componente Search (se pasa el manejador de Keyword que incluye setKeyword)
+      Flatlist: Lista los productos de la categoría de productos elegida y los renderiza con el compoonente ProductByCategory (tarjeta de productos) -recibe el handler de setProductId y cada producto- 
+    
+      LOGICA DE PANTALLAS
+     
+      La app se inicializa en Home pero al clickearse sobre una categoría de producto se mapean y renderizan todos los productos de esa categoria
+      También se puede buscar un producto en particular (Search) mediante un filtrado de aquellos productos cuyo nombre coincide con la keyword ingresada en el search
+      
+    */
 
     return (
         <Pressable style={styles.container} onPress={() => selectProductId(item.id)}>

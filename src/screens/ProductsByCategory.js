@@ -19,7 +19,7 @@ import categories from "../utils/data/categories_market.json"
 import products from "../utils/data/products_market.json"
 
 // El componente ProductsByCategory recibe categorySelected, setCategorySelected (handler que modifica el estado de categorySelected) y selectProductId
-const ProductsByCategory = ({ categorySelected, setCategorySelected, selectProductId }) => {
+const ProductsByCategory = ({ categorySelected, selectedCategoryState, selectProductId }) => {
 
   /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------- */
 
@@ -28,18 +28,6 @@ const ProductsByCategory = ({ categorySelected, setCategorySelected, selectProdu
 
   // Guardo la palabra del buscador de productos
   const [keyword, setKeyword] = useState("")
-
-  /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
-
-  // Creo función para modificar el estado de keyword (Search)
-  const handlerKeyword = (k) => { 
-    setKeyword(k)
-  }
-
-  const handleSetProductsCategory = (products) => { // 
-    setProductsCategory(products) // 
-  }
-
 
   /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
@@ -80,10 +68,21 @@ const ProductsByCategory = ({ categorySelected, setCategorySelected, selectProdu
 
   }, [categorySelected, keyword])
 
+    /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
+
+  // Creo función para modificar el estado de keyword (Search)
+  const handlerKeyword = (k) => { 
+    setKeyword(k)
+  }
+
+  const handleSetProductsCategory = (products) => { // 
+    setProductsCategory(products) // 
+  }
+
 
   // Vacío la categoría de productos seleccionada al volver a Home para poder renderizar "Home"
   const goBack = () => {
-    setCategorySelected("")
+    selectedCategoryState("")
   }
 
 
@@ -103,6 +102,7 @@ const ProductsByCategory = ({ categorySelected, setCategorySelected, selectProdu
    
     La app se inicializa en Home pero al clickearse sobre una categoría de producto se mapean y renderizan todos los productos de esa categoria
     También se puede buscar un producto en particular (Search) mediante un filtrado de aquellos productos cuyo nombre coincide con la keyword ingresada en el search
+    
   */
 
   return (
@@ -122,7 +122,7 @@ const ProductsByCategory = ({ categorySelected, setCategorySelected, selectProdu
       <FlatList
         data={productsCategory}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <ProductByCategory selectProductId={selectProductId} item={item} />}
+        renderItem={({ item }) => <ProductByCategory selectProductId={selectProductId} item={item}/>}
       />
 
     </>

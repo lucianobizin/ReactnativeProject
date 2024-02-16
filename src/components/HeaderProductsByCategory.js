@@ -1,8 +1,8 @@
 // Importo componentes de react & react-native
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View } from 'react-native'
 
 // El componente Header recibe title (texto a renderizar) y HeaderStyle([0]=container, [1]=texto)
-const HeaderProductsByCategory = ({headerProductsByCategoryStyle, title="Producto"}) => {
+const HeaderProductsByCategory = ({headerProductsByCategoryStyle, title}) => {
 
   return (
 
