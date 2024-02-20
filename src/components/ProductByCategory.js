@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image, Pressable, useWindowDimensions } from 'r
 import colors from '../utils/global/colors.js';
 
 // El componente ProductByCategory recibe item (producto de la categoría elegida por el usuario) y selectProductId (que distingue entre ProductsByCategory y ProductDetail) 
-const ProductByCategory = ({ item, selectProductId }) => {
+const ProductByCategory = ({ item, navigation }) => {
 
 
     /* -------------------   ADMINISTRACIÓN DE DIMENSIONES DE PANTALLA   ----------------------------------------------------- */
@@ -32,7 +32,7 @@ const ProductByCategory = ({ item, selectProductId }) => {
     */
 
     return (
-        <Pressable style={styles.container} onPress={() => selectProductId(item.id)}>
+        <Pressable style={styles.container} onPress={() => navigation.navigate("ProductDetail", { productId: item.id })}>
             <View style={styles.imageSpan}>
                 <Image style={[styles.image, { position: 'absolute' }]} source={{ uri: item.thumbnail }} resizeMode='cover' />
                 <View style={styles.overlay} />
@@ -51,14 +51,24 @@ export default ProductByCategory;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.primary,
-        width: '80%',
-        marginHorizontal: '10%',
+        width: '85%',
         padding: 10,
-        marginVertical: 10,
+        marginTop: "5%",
         borderRadius: 5,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20
+        gap: 20,
+        left: 20,
+        // Sombras para Android
+        elevation: 8,
+        // Sombras para iOS
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     productText: {
         width: '60%',
@@ -75,6 +85,16 @@ const styles = StyleSheet.create({
         position: 'relative',
         overflow: 'hidden',
         borderRadius: 5,
+        // Sombras para Android
+        elevation: 8,
+        // Sombras para iOS
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     image: {
         width: '100%',
@@ -82,6 +102,6 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(234, 167, 173, 0.1)', // Color primario con opacidad muy baja
+        backgroundColor: 'rgba(234, 167, 173, 0.15)'
     }
 });

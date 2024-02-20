@@ -1,27 +1,22 @@
 // Importo componentes de react & react-native
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList, Pressable } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
-import HeaderProductsByCategory from '../components/HeaderProductsByCategory.js'
 import ProductByCategory from '../components/ProductByCategory.js'
 import Search from '../components/Search.js'
-
-// Importo librerías externas
-import { AntDesign } from "@expo/vector-icons"
-
-// Importo objetos globales de estilo de la app --> fuentes y colores
-import colors from '../utils/global/colors.js'
-import fonts from '../utils/global/fonts.js'
 
 // Importo las bases de datos
 import categories from "../utils/data/categories_market.json"
 import products from "../utils/data/products_market.json"
 
 // El componente ProductsByCategory recibe categorySelected, setCategorySelected (handler que modifica el estado de categorySelected) y selectProductId
-const ProductsByCategory = ({ categorySelected, selectedCategoryState, selectProductId }) => {
+const ProductsByCategory = ({ navigation, route }) => {
 
-  /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------- */
+  /* -------------------   RECEPCIÓN DE OBJETO POR PARÁMETROS  ------------------------------------------------------------------------------ */
+  const { categorySelected } = route.params
+
+  /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
   // Guardo los productos de la categoría elegida
   const [productsCategory, setProductsCategory] = useState([]) // 
@@ -55,7 +50,7 @@ const ProductsByCategory = ({ categorySelected, selectedCategoryState, selectPro
     if (keyword) {
 
       // Mapeo del array de ids de productos que forman parte de la categoría seleccionada y devuelvo el producto (clave=product=id del producto, valor=catProductID=producto)
-      handleSetProductsCategory(productsCategory.filter(product => { 
+      handleSetProductsCategory(productsCategory.filter(product => {
 
         const productNameLower = product.name.toLowerCase()
         const keywordLower = keyword.toLowerCase()
@@ -63,28 +58,22 @@ const ProductsByCategory = ({ categorySelected, selectedCategoryState, selectPro
         return productNameLower.includes(keywordLower)
 
       })
-      
-    )}
+
+      )
+    }
 
   }, [categorySelected, keyword])
 
-    /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
+  /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
 
   // Creo función para modificar el estado de keyword (Search)
-  const handlerKeyword = (k) => { 
+  const handlerKeyword = (k) => {
     setKeyword(k)
   }
 
   const handleSetProductsCategory = (products) => { // 
     setProductsCategory(products) // 
   }
-
-
-  // Vacío la categoría de productos seleccionada al volver a Home para poder renderizar "Home"
-  const goBack = () => {
-    selectedCategoryState("")
-  }
-
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSBYCATEGORY ------------------------------------------------------------------------------- */
 
@@ -109,21 +98,14 @@ const ProductsByCategory = ({ categorySelected, selectedCategoryState, selectPro
 
     <>
 
-      <View style={styles.headerContainer}>
-        <Pressable style={styles.goBackRowContainer} onPress={goBack}>
-          <AntDesign style={styles.goBackRowButton} name="doubleleft" size={35} color={"black"} />
-        </Pressable>
-        <HeaderProductsByCategory headerProductsByCategoryStyle={[styles.headerProductsByCategoryStyle, styles.text]} title={categorySelected} />
-        <View style={styles.emptyView}></View>
+      <Search searchStyle={styles.search} handlerKeyword={handlerKeyword} />
+      <View style={styles.container}>
+        <FlatList
+          data={productsCategory}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <ProductByCategory navigation={navigation} item={item} />}
+        />
       </View>
-
-      <Search handlerKeyword={handlerKeyword} />
-
-      <FlatList
-        data={productsCategory}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <ProductByCategory selectProductId={selectProductId} item={item}/>}
-      />
 
     </>
 
@@ -138,40 +120,23 @@ export default ProductsByCategory
 
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: colors.white,
-    height: "10%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+  search: {
+    top: "20%",
+    position: "relative",
+    zIndex: 5,
+    // Sombras para Android
+    elevation: 8,
+    // Sombras para iOS
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
-  goBackRowContainer: {
-    flex: 1,
-    justifyContent: "left",
-    padding: 10
-  },
-  goBackRowButton: {
-    paddingVertical: 10,
-    transform: [{ scale: 0.50 }] // Ajusta el tamaño del ícono (menos de 1 para hacerlo más pequeño)
-  },
-  headerProductsByCategoryStyle: {
-    backgroundColor: colors.white,
-    borderTopColor: "white",
-    borderBottomColor: "white",
-    borderTopWidth: 5,
-    borderBottomWidth: 5,
-    height: 80,
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 5,
-    flex: 3
-  },
-  text: {
-    fontFamily: fonts.joseginSansBold,
-    fontSize: 24
-  },
-  emptyView: {
-    flex: 1,
-    color: "white"
+  container: {
+    marginTop: "20%",
+    marginBottom: 2,
   }
 })

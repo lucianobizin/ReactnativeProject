@@ -6,27 +6,28 @@ import CardCategory from './CardCategory.js'
 
 // Importo base de datos de categorías (categories_market.json)
 import categories from "../utils/data/categories_market.json"
+
+// Importo objetos globales de estilo de la app --> fuentes y colores 
 import colors from '../utils/global/colors.js'
 
-
 // El componente Categories recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
-const Categories = ({selectedCategoryState}) => {
+const Categories = ({ navigation }) => {
 
-  /* -------------------   RENDERIZACIÓN DE CATEGORIES --------------------------------------------------------------------- */
+    /* -------------------   RENDERIZACIÓN DE CATEGORIES --------------------------------------------------------------------- */
 
-  /* 
+    /* 
+    
+      COMPONENTES / PANTALLAS
   
-    COMPONENTES / PANTALLAS
-
-    FlatList: Genera lista de categorías (data={datos a listar: json}, numColumns={nª cols a mostrar: int}, keyExtractor={item => item}, renderItem={({item}) => (componente a renderizar)})
-    CardCategory: Administra el contenido de cada tarjeta de categoría de producto (nombre básicamente). Recibe: item/producto del json, style (cardContainer) y handler que modifica el estado de categorySelected -setCategorySelected- 
-
-    LOGICA DE PANTALLAS
-
-    categoryNames mapea y guarda los values de cada key del objeto categories (json: key=id de categoría, value: nombre de categoría)
-    categoryNames se renderiza mediante el componente FlatList en dos columnas y se pasa cada nombre de categoría al componente CardCategory para su administración
-
-  */
+      FlatList: Genera lista de categorías (data={datos a listar: json}, numColumns={nª cols a mostrar: int}, keyExtractor={item => item}, renderItem={({item}) => (componente a renderizar)})
+      CardCategory: Administra el contenido de cada tarjeta de categoría de producto (nombre básicamente). Recibe: item/producto del json, style (cardContainer) y handler que modifica el estado de categorySelected -setCategorySelected- 
+  
+      LOGICA DE PANTALLAS
+  
+      categoryNames mapea y guarda los values de cada key del objeto categories (json: key=id de categoría, value: nombre de categoría)
+      categoryNames se renderiza mediante el componente FlatList en dos columnas y se pasa cada nombre de categoría al componente CardCategory para su administración
+  
+    */
 
     const categoryNames = Object.values(categories).map(category => category.name)
 
@@ -37,9 +38,10 @@ const Categories = ({selectedCategoryState}) => {
             keyExtractor={item => item}
             renderItem={({ item }) => (
                 <CardCategory
-                item={item}
-                cardContainer={styles.cardContainer}
-                selectedCategoryState={selectedCategoryState}/>
+                    item={item}
+                    navigation={navigation}
+                    cardContainer={styles.cardContainer}
+                />
             )}
         />
     )

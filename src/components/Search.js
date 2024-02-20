@@ -9,7 +9,7 @@ import { AntDesign } from "@expo/vector-icons"
 import colors from '../utils/global/colors.js'
 
 // El componente Search recibe el handler del setKeyword y retorna la renderización de los productos cuyo nombre incluyan la keyword
-const Search = ({ handlerKeyword }) => {
+const Search = ({ searchStyle, handlerKeyword }) => {
 
     /* -------------------   DECLARACIÓN DE USESTATE PARA LA SCREEN  ------------------------------------------------------- */
 
@@ -28,8 +28,6 @@ const Search = ({ handlerKeyword }) => {
     
     // Declaro función de búsqueda (barra de búsqueda de la screen ==> ProductsByCategory)
     const search = () => {
-
-        console.log(input)
 
         // Defino los caracteres que si se pasan al input y se quiere hacer la búsqueda den error
         const expression = /[\(\)@#$%^&*!]+/
@@ -79,7 +77,7 @@ const Search = ({ handlerKeyword }) => {
  
         <View>
 
-            <View style={styles.container}> 
+            <View style={[searchStyle, styles.container]}> 
                 <TextInput
                     placeholder='Buscar'
                     style={styles.input}
@@ -111,18 +109,20 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     input: {
-        flex: 1,
-        backgroundColor: colors.secondary,
-        borderColor: colors.secondary,
+        width: "70%",
+        backgroundColor: colors.primary,
+        borderColor: colors.primary,
         borderWidth: 1,
         paddingLeft: 20,
         paddingVertical: 5,
-        borderRadius: 100
+        borderRadius: 100,
+        left: 10
     },
     search: {
         color: colors.secondary,
         transform: [{ scale: 0.75 }],
-        padding: 5
+        padding: 5,
+        marginLeft: 15
     },
     delete: {
         color: colors.secondary,

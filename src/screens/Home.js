@@ -1,16 +1,14 @@
 // Importo componentes de react & react-native
-import { StyleSheet, View } from 'react-native'
+import { View, StyleSheet } from "react-native"
+
+// Importo los componentes de las pantalla Home: Header y Categories
+import Categories from '../components/Categories.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import colors from '../utils/global/colors.js'
-import fonts from '../utils/global/fonts.js'
-
-// Importo los componentes de las pantalla Home: Header y Categories (adminitra la lista de categorías)
-import HeaderHome from '../components/HeaderHome.js'
-import Categories from '../components/Categories.js'
 
 // El componente Home recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
-const Home = ({selectedCategoryState}) => {
+const Home = ({ navigation }) => {
 
   /* -------------------   RENDERIZACIÓN DE HOME --------------------------------------------------------------------------- */
 
@@ -28,39 +26,23 @@ const Home = ({selectedCategoryState}) => {
 
   */
 
-    return (
-        <View style={styles.container}>
-            <HeaderHome title={'FRUTIZIA'} headerProductsByCategoryStyle={[styles.header, styles.text]} />
-            <Categories
-            selectedCategoryState={selectedCategoryState}/>
+  return (
 
-        </View>
-    )
+    <View style={styles.container}>
+      <Categories navigation={navigation} />
+    </View>
+
+
+  )
 }
 
 export default Home
 
-/* -------------------   DEFINICIÓN DE CATEGORÍAS DE PRODUCTOS DE LA PANTALLA HOME  ----------------------------------------- */
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.primary
-    },
-    header: {
-        backgroundColor: colors.primary,
-        borderTopColor: "white",
-        borderBottomColor: "white",
-        borderTopWidth: 5,
-        borderBottomWidth: 5,
-        height: 80,
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        marginVertical: 5
-      },
-      text: {
-        fontFamily: fonts.joseginSansBold,
-        fontSize: 24
-      }
+
+  container: {
+      top: 80,
+      backgroundColor: colors.primary
+  }
+
 })
