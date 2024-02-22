@@ -38,7 +38,17 @@ export default Header
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative"
+    position: "relative",
+    // Sombras para Android
+    elevation: 8,
+    // Sombras para iOS
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   goBack: {
     position: "absolute",

@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",
-    marginVertical: 45,
+    marginVertical: 35,
     gap: 15
   },
   title: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
-    marginTop: 15,
+    marginTop: 5,
     // Sombras para Android
     elevation: 4,
     // Sombras para iOS
