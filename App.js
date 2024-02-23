@@ -8,6 +8,12 @@ import { useFonts } from "expo-font"
 import { fontCollection } from "./src/utils/global/fonts.js"
 import colors from './src/utils/global/colors.js'
 
+// Importo redux y su provider
+import { Provider } from 'react-redux'
+
+// Importo el estado de la app guardado en store
+import { store } from "./src/app/store.js"
+
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
 import MainNavigation from "./src/navigation/MainNavigation.js"
 
@@ -46,6 +52,7 @@ const App = () => {
     COMPONENTES / PANTALLAS
 
     StatusBar: Controla el estilo de la barra de estado
+    Provider: Permite que las variables que se guardan en el store estén disponibles para toda la app
     MainNavigation: Controla la navegación
 
     LOGICA DE PANTALLAS
@@ -59,8 +66,10 @@ const App = () => {
   return (
 
     <>
-      <StatusBar backgroundColor="black"/>
-      <MainNavigation />
+      <StatusBar backgroundColor="black" />
+      <Provider store={store}>
+        <MainNavigation />
+      </Provider>
     </>
   )
 }

@@ -2,7 +2,9 @@
 import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native'
 
 // Importo la data del carrito (ficticia por el momento)
-import cart from "../utils/data/cart.json"
+// import cart from "../utils/data/cart.json"
+// Importo el useSelector de redux que maneja el estado actualizado del carrito
+import { useSelector } from 'react-redux'
 
 // Import el archivo de colores y fuentes
 import colors from '../utils/global/colors.js'
@@ -12,6 +14,10 @@ import fonts from '../utils/global/fonts.js'
 import CartItem from "../components/CartItem.js"
 
 const Cart = () => {
+
+    // Traigo el estado del carrito utilizando useSelector (ver -> store.js y cartSlice.js)
+    const cart = useSelector( (state) => state.cart)
+    
 
     /* -------------------   RENDERIZACIÓN DE PANTALLA DEL CARRO  --------------------------------------------------------------------- */
 
@@ -38,7 +44,7 @@ const Cart = () => {
             />
 
             <View style={styles.confirmContainer}>
-                <Text style={styles.confirmText}> Total: $ {cart.total}</Text>
+                <Text style={styles.confirmText}> Total: $ {cart.total.toFixed(2)}</Text>
                 <Pressable style={styles.pressableButton} onPress={() => console.log("Procesando compra")}>
                     <Text style={styles.confirmText}>Comprar</Text>
                 </Pressable>

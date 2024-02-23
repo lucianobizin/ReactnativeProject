@@ -2,6 +2,12 @@
 import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 
+// Importo la función de redux que permite despachar acciones para actualizar estados
+import { useDispatch } from 'react-redux'
+
+// Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
+import { addCartItem } from '../features/cart/cartSlice.js'
+
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
 import products from "../utils/data/products_market.json"
 
@@ -26,6 +32,10 @@ const ProductDetail = ({ route }) => {
     const productFound = Object.values(products).find(product => String(product.id) === String(productId))
     setProduct(productFound)
   }, [productId])
+
+
+  /* -------------------   INSTANCIACIÓN DE DISPATCH  -------------------------------------------------------------------- */
+  const dispatch = useDispatch()
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSDETAIL -------------------------------------------------------------------------------- */
 
@@ -65,8 +75,8 @@ const ProductDetail = ({ route }) => {
         <View style={[styles.containerPrice, !portrait && { width: "15%", flexDirection: "column" }]}>
           <Text style={styles.priceText}>Precio de bulto: {product.bulk_price} €/{product.reference_format}</Text>
           <Text style={styles.priceText}>Precio de unidad: {product.unit_price} € / {product.unit_size} {product.size_format}</Text>
-          <Pressable style={styles.buyNow} onPress={() => console.log("Comprar")}>
-            <Text style={styles.buyNowText}>Buy</Text>
+          <Pressable style={styles.buyNow} onPress={() => dispatch(addCartItem(product))}>
+            <Text style={styles.buyNowText}>Agregar</Text>
           </Pressable>
         </View>
 
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "70%",
-    height: 350,
+    height: 285,
     objectFit: "contain"
   },
   containerText: {

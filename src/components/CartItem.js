@@ -1,5 +1,11 @@
 // Importo componentes de react & react-native
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+
+// Importo la función de redux que permite despachar acciones para actualizar estados
+import { useDispatch } from 'react-redux'
+
+// Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
+import { deleteCartItem } from '../features/cart/cartSlice.js'
 
 // Importo componentes visuales de librerías externas
 import { Entypo } from "@expo/vector-icons"
@@ -8,6 +14,9 @@ import { Entypo } from "@expo/vector-icons"
 import colors from '../utils/global/colors.js'
 
 const CartItem = ({ item }) => {
+
+    // Instancio el despachante
+    const dispatch = useDispatch() 
 
     /* -------------------   RENDERIZACIÓN DE PANTALLA DEL CARRO  --------------------------------------------------------------------- */
 
@@ -38,8 +47,10 @@ const CartItem = ({ item }) => {
                 <Text style={styles.text2}>Precio por {item.size_format}: {item.reference_price} €</Text>
                 <Text style={styles.text2}>Subtotal: {item.reference_price * item.quantity} </Text>
             </View>
-
-            <Entypo name="trash" size={30} color={colors.secondary} />
+            
+            <Pressable onPress={ () => dispatch(deleteCartItem(item.id))}>
+                <Entypo name="trash" size={30} color={colors.secondary} />
+            </Pressable>
 
         </View>
 
