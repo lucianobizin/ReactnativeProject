@@ -45,7 +45,7 @@ const CartItem = ({ item }) => {
                 <Text style={styles.text}>{item.name}</Text>
                 <Text style={styles.text2}>Cantidad: {item.quantity} {item.size_format}</Text>
                 <Text style={styles.text2}>Precio por {item.size_format}: {item.reference_price} €</Text>
-                <Text style={styles.text2}>Subtotal: {item.reference_price * item.quantity} </Text>
+                <Text style={styles.text2}>Subtotal: {item.reference_price * item.quantity} €</Text>
             </View>
             
             <Pressable onPress={ () => dispatch(deleteCartItem(item.id))}>

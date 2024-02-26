@@ -8,8 +8,8 @@ const initialState = {
 }
 
 // La porción del store de la app en la que voy a almacenar el estado de mi carrito se llama "cart"
-// El estado inicial del estado de mi carrito es initialState = initialState
-// En reducers se definen las acciones que se despacharán para que los reducers actulicen el estado de mi carrito 
+// El estado inicial del estado de mi carrito es initialState: initialState
+// En reducers se definen las acciones que se despacharán para que los estos actualicen el estado de mi carrito 
 export const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -17,20 +17,18 @@ export const cartSlice = createSlice({
 
         // Acción que modificará el state del carrito agregando objetos que se le pasen como argumento (actions)
 
-        // -- TODO: Falta agregar la funcionalidad de agregar al carrito con número definido
-
         addCartItem: (state, actions) => {
 
             // actions recibe el producto entero y se revisa el id (ver -> ProductDetail) => return: -1 (!existe) y index (existe)
             // Reviso si existe el producto en el carrito a fin de evitar repeticiones (del state invoco los items guardados)
             // Se busca el índice del producto que tenga el id pasado en actions
 
-            const index = state.items.findIndex((item) => item.id === actions.payload.id)
+            const index = state.items.findIndex((item) => item.id === actions.payload.product.id)
 
             if (index === -1) {
 
                 // Si no existe el producto en el carrito, agrego a la lista de items el objeto traido en actions.payload y genero la propiedad quantity: 1
-                state.items = [...state.items, { ...actions.payload, quantity: 1 }]
+                state.items = [...state.items, { ...actions.payload.product, quantity: actions.payload.count }]
 
             } else {
 
@@ -43,8 +41,8 @@ export const cartSlice = createSlice({
                 // Generalmente map se utiliza para agregar productos 
 
                 state.items = state.items.map((item) => {
-                    if (item.id === actions.payload.id) {
-                        return { ...item, quantity: item.quantity + 1 }
+                    if (item.id === actions.payload.product.id) {
+                        return { ...item, quantity: actions.payload.count }
                     } else {
                         return item
                     }

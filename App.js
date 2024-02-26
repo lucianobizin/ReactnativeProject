@@ -57,9 +57,13 @@ const App = () => {
 
     LOGICA DE PANTALLAS
 
-    La app se inicializa en Home (categorySelected=null, productId=null)
-    Al elegirse una categoría de producto (categorySelected, productId=null) nos dirige a ProductsByCategory
-    Al elegirse un producto de la categoría de producto (categorySelected, productId) nos dirige a ProductDetail
+    -> STACK VIEWS
+    La app se inicializa en ShopStack (ver --> MainNavigator)
+    Al elegirse una categoría de producto nos dirige a ProductsByCategory
+    Al elegirse un producto de la categoría de producto nos dirige a ProductDetail
+
+    -> TAB VIEWS
+    Posee tres vistas: ShopStack, Carrito y Órdenes de compra
 
   */
 

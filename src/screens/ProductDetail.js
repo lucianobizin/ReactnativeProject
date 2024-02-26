@@ -1,12 +1,9 @@
 // Importo componentes de react & react-native
 import { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 
-// Importo la función de redux que permite despachar acciones para actualizar estados
-import { useDispatch } from 'react-redux'
-
-// Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
-import { addCartItem } from '../features/cart/cartSlice.js'
+// Importo el componente del contador
+import Counter from '../components/Counter.js'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
 import products from "../utils/data/products_market.json"
@@ -25,17 +22,13 @@ const ProductDetail = ({ route }) => {
   // Guardo el producto elegido
   const [product, setProduct] = useState({})
 
-  /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
+  /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ----------------------------------------------------- */
 
   // Declaración de useEffect que escuchando productId busca en la base de productos aquel que tiene el mismo id del producto elegido
   useEffect(() => {
     const productFound = Object.values(products).find(product => String(product.id) === String(productId))
     setProduct(productFound)
   }, [productId])
-
-
-  /* -------------------   INSTANCIACIÓN DE DISPATCH  -------------------------------------------------------------------- */
-  const dispatch = useDispatch()
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSDETAIL -------------------------------------------------------------------------------- */
 
@@ -73,11 +66,11 @@ const ProductDetail = ({ route }) => {
         </View>
 
         <View style={[styles.containerPrice, !portrait && { width: "15%", flexDirection: "column" }]}>
-          <Text style={styles.priceText}>Precio de bulto: {product.bulk_price} €/{product.reference_format}</Text>
-          <Text style={styles.priceText}>Precio de unidad: {product.unit_price} € / {product.unit_size} {product.size_format}</Text>
-          <Pressable style={styles.buyNow} onPress={() => dispatch(addCartItem(product))}>
-            <Text style={styles.buyNowText}>Agregar</Text>
-          </Pressable>
+          <Text style={styles.priceText}>Precio de bulto: {product.bulk_price} € / {product.reference_format}</Text>
+          <Text style={styles.priceText}>Precio de unidad aprox: {product.unit_price} €</Text>
+          <View style={styles.counter}>
+            <Counter product={product} productId={productId}/>
+          </View>
         </View>
 
       </View>
@@ -111,8 +104,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   image: {
-    width: "70%",
-    height: 285,
+    width: "65%",
+    height: 275,
     objectFit: "contain"
   },
   containerText: {
@@ -121,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 25,
     paddingHorizontal: 5,
-    paddingVertical: 25,
+    paddingVertical: 15,
     // Sombras para Android
     elevation: 8,
     // Sombras para iOS
@@ -145,30 +138,11 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginBottom: 10
   },
-  buyNow: {
-    width: 75,
-    height: 35,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.tertiary,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    marginTop: 5,
-    // Sombras para Android
-    elevation: 4,
-    // Sombras para iOS
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  buyNowText: {
-    color: "white"
+  counter: {
+    flexDirection: "row",
+    justifyContent: "space-around"
   }
 })

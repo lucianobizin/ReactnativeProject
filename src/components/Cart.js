@@ -1,8 +1,6 @@
 // Importo componentes de react & react-native
 import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native'
 
-// Importo la data del carrito (ficticia por el momento)
-// import cart from "../utils/data/cart.json"
 // Importo el useSelector de redux que maneja el estado actualizado del carrito
 import { useSelector } from 'react-redux'
 
@@ -45,7 +43,7 @@ const Cart = () => {
 
             <View style={styles.confirmContainer}>
                 <Text style={styles.confirmText}> Total: $ {cart.total.toFixed(2)}</Text>
-                <Pressable style={styles.pressableButton} onPress={() => console.log("Procesando compra")}>
+                <Pressable style={styles.pressableButton} onPress={() => console.log(`Procesando compra ${cart.total}`)}>
                     <Text style={styles.confirmText}>Comprar</Text>
                 </Pressable>
 
