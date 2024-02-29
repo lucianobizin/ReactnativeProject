@@ -1,17 +1,27 @@
 // Importo componentes de react & react-native
-import { StyleSheet, FlatList, Dimensions } from 'react-native'
+import { StyleSheet, FlatList, Dimensions, ActivityIndicator } from 'react-native'
 
 // Importo los componentes de las pantalla Home: Header y Categories (adminitra la lista de categorías)
 import CardCategory from './CardCategory.js'
 
-// Importo base de datos de categorías (categories_market.json)
-import categories from "../utils/data/categories_market.json"
+// Importo las categorías desde Firebase (categories_market.json)
+import { useGetCategoriesQuery } from '../app/services/shop.js' 
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import colors from '../utils/global/colors.js'
 
 // El componente Categories recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
 const Categories = ({ navigation }) => {
+
+    // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
+    const {data:categories, isLoading} = useGetCategoriesQuery()
+
+    if (!categories) {
+        return <ActivityIndicator />; // O cualquier otro indicador de carga
+    }
+    // Obtengo los nombres de categoría del objeto categories mapeando la propiedad name (=categoría)
+    
+    const categoryNames = Object.values(categories).map(category => category.name)
 
     /* -------------------   RENDERIZACIÓN DE CATEGORIES --------------------------------------------------------------------- */
 
@@ -28,8 +38,6 @@ const Categories = ({ navigation }) => {
       categoryNames se renderiza mediante el componente FlatList en dos columnas y se pasa cada nombre de categoría al componente CardCategory para su administración
   
     */
-
-    const categoryNames = Object.values(categories).map(category => category.name)
 
     return (
         <FlatList

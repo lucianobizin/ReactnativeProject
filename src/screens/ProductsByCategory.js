@@ -1,20 +1,34 @@
 // Importo componentes de react & react-native
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
 import ProductByCategory from '../components/ProductByCategory.js'
 import Search from '../components/Search.js'
 
-// Importo las bases de datos
-import categories from "../utils/data/categories_market.json"
-import products from "../utils/data/products_market.json"
+// Importo las categorías desde Firebase (categories_market.json)
+import { useGetCategoriesQuery } from '../app/services/shop.js'
+
+// Importo los productos desde Firebase (products_market.json)
+import { useGetProductByCategoryQuery } from '../app/services/shop.js'
+import colors from '../utils/global/colors.js'
 
 // El componente ProductsByCategory recibe categorySelected, setCategorySelected (handler que modifica el estado de categorySelected) y selectProductId
 const ProductsByCategory = ({ navigation, route }) => {
 
   /* -------------------   RECEPCIÓN DE OBJETO POR PARÁMETROS  ------------------------------------------------------------------------------ */
   const { categorySelected } = route.params
+
+  /* -------------------   SOLICITUD DE LA LISTA DE CATEGORÍAS Y PRODUCTOS A LA BBDD -------------------------------------------------------- */
+  // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
+
+  // Obtengo las productos de cada categoría y los guardo en una constante products (sobreescribí el nombre data) utilizando useGetProductsByCategoryQuery (ver -> shop.js) 
+  const { data: products, isError, isLoading: isLoadingProducts, isSuccess, error } = useGetProductByCategoryQuery(categorySelected)
+
+  if(!categories || !products) {
+    return <ActivityIndicator/>
+  }
 
   /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
@@ -53,6 +67,7 @@ const ProductsByCategory = ({ navigation, route }) => {
       handleSetProductsCategory(productsCategory.filter(product => {
 
         const productNameLower = product.name.toLowerCase()
+
         const keywordLower = keyword.toLowerCase()
 
         return productNameLower.includes(keywordLower)
@@ -94,11 +109,14 @@ const ProductsByCategory = ({ navigation, route }) => {
     
   */
 
+
+
   return (
 
     <>
 
       <Search searchStyle={styles.search} handlerKeyword={handlerKeyword} />
+
       <View style={styles.container}>
         <FlatList
           data={productsCategory}
@@ -120,6 +138,9 @@ export default ProductsByCategory
 
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    backgroundColor: colors.primary
+  },
   search: {
     top: "20%",
     position: "relative",

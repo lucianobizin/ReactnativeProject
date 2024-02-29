@@ -1,12 +1,11 @@
 // Importo componentes de react & react-native
-import { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 
 // Importo el componente del contador
 import Counter from '../components/Counter.js'
 
-// Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
-import products from "../utils/data/products_market.json"
+// Importo la función que traerá el producto por id desde Firebase (products_market.json)
+import { useGetProductByIdQuery } from '../app/services/shop.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores
 import colors from '../utils/global/colors.js'
@@ -17,18 +16,13 @@ const ProductDetail = ({ route }) => {
   /* -------------------   OBTENCIÓN DE VARIABLE POR PARÁMETRO  ---------------------------------------------------------- */
   const { productId, portrait } = route.params
 
-  /* -------------------   DECLARACIÓN DE USESTATE PARA LA SCREEN  ------------------------------------------------------- */
+  /* -------------------   SOLICITUD DE LA LISTA DE PRODUCTOS A LA BBDD -------------------------------------------------- */
+  // Obtengo el producto buscado (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
+  const {data: product, isLoading} = useGetProductByIdQuery(productId)
 
-  // Guardo el producto elegido
-  const [product, setProduct] = useState({})
-
-  /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ----------------------------------------------------- */
-
-  // Declaración de useEffect que escuchando productId busca en la base de productos aquel que tiene el mismo id del producto elegido
-  useEffect(() => {
-    const productFound = Object.values(products).find(product => String(product.id) === String(productId))
-    setProduct(productFound)
-  }, [productId])
+  if (!categories) {
+    return <ActivityIndicator />; // O cualquier otro indicador de carga
+}
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSDETAIL -------------------------------------------------------------------------------- */
 
@@ -48,6 +42,19 @@ const ProductDetail = ({ route }) => {
     Con el botón de las dos flechas para atrás se vuelve a la pantalla inicial
     
   */
+
+  // En caso de que se estén cargando el producto buscado
+  if (isLoading) {
+
+    return (
+
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+
+    )
+
+  }
 
   return (
 
@@ -69,7 +76,7 @@ const ProductDetail = ({ route }) => {
           <Text style={styles.priceText}>Precio de bulto: {product.bulk_price} € / {product.reference_format}</Text>
           <Text style={styles.priceText}>Precio de unidad aprox: {product.unit_price} €</Text>
           <View style={styles.counter}>
-            <Counter product={product} productId={productId}/>
+            <Counter product={product} productId={productId} />
           </View>
         </View>
 
@@ -83,6 +90,10 @@ const ProductDetail = ({ route }) => {
 export default ProductDetail
 
 const styles = StyleSheet.create({
+
+ loadingContainer: {
+  backgroundColor: colors.primary
+  },
   container: {
     backgroundColor: colors.white,
     top: "10%",
