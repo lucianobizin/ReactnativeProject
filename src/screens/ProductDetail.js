@@ -20,10 +20,6 @@ const ProductDetail = ({ route }) => {
   // Obtengo el producto buscado (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
   const {data: product, isLoading} = useGetProductByIdQuery(productId)
 
-  if (!categories) {
-    return <ActivityIndicator />; // O cualquier otro indicador de carga
-}
-
   /* -------------------   RENDERIZACIÓN DE PRODUCTSDETAIL -------------------------------------------------------------------------------- */
 
   /* 

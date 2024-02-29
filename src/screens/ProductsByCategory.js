@@ -6,11 +6,10 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 import ProductByCategory from '../components/ProductByCategory.js'
 import Search from '../components/Search.js'
 
-// Importo las categorías desde Firebase (categories_market.json)
-import { useGetCategoriesQuery } from '../app/services/shop.js'
+// Importo las categorías y productos desde Firebase (categories_market.json y products_market.json)
+import { useGetCategoriesQuery, useGetProductByCategoryQuery } from '../app/services/shop.js'
 
-// Importo los productos desde Firebase (products_market.json)
-import { useGetProductByCategoryQuery } from '../app/services/shop.js'
+// Importo los colores de estilo
 import colors from '../utils/global/colors.js'
 
 // El componente ProductsByCategory recibe categorySelected, setCategorySelected (handler que modifica el estado de categorySelected) y selectProductId
@@ -19,18 +18,7 @@ const ProductsByCategory = ({ navigation, route }) => {
   /* -------------------   RECEPCIÓN DE OBJETO POR PARÁMETROS  ------------------------------------------------------------------------------ */
   const { categorySelected } = route.params
 
-  /* -------------------   SOLICITUD DE LA LISTA DE CATEGORÍAS Y PRODUCTOS A LA BBDD -------------------------------------------------------- */
-  // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
-
-  // Obtengo las productos de cada categoría y los guardo en una constante products (sobreescribí el nombre data) utilizando useGetProductsByCategoryQuery (ver -> shop.js) 
-  const { data: products, isError, isLoading: isLoadingProducts, isSuccess, error } = useGetProductByCategoryQuery(categorySelected)
-
-  if(!categories || !products) {
-    return <ActivityIndicator/>
-  }
-
-  /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------------------------ */
+    /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
   // Guardo los productos de la categoría elegida
   const [productsCategory, setProductsCategory] = useState([]) // 
@@ -38,7 +26,8 @@ const ProductsByCategory = ({ navigation, route }) => {
   // Guardo la palabra del buscador de productos
   const [keyword, setKeyword] = useState("")
 
-  /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
+
+    /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
   // Declaración de useEffect para definir el valor de CategoryProductsID y mapear los productos que tengan como nombre de categoría el valor CategoryProductsID (elegida en Home)
   // Tambiéen funciona para el Search revisando que la keyword coincida con algún producto de la lista de productos de la categoría elegida
@@ -46,7 +35,7 @@ const ProductsByCategory = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    if (categorySelected) {
+    if (categorySelected && products && categories) {
 
       // Traigo la categoria cuyo nombre sea categorySelected (fuente: base de datos: categories_market.json )
       const selectedCategory = Object.values(categories).find(category => String(category.name) === String(categorySelected))
@@ -61,7 +50,7 @@ const ProductsByCategory = ({ navigation, route }) => {
 
     }
 
-    if (keyword) {
+    if (keyword && products) {
 
       // Mapeo del array de ids de productos que forman parte de la categoría seleccionada y devuelvo el producto (clave=product=id del producto, valor=catProductID=producto)
       handleSetProductsCategory(productsCategory.filter(product => {
@@ -77,9 +66,43 @@ const ProductsByCategory = ({ navigation, route }) => {
       )
     }
 
-  }, [categorySelected, keyword])
+  }, [categorySelected, keyword, categories, products])
 
-  /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
+  /* -------------------   SOLICITUD DE LA LISTA DE CATEGORÍAS Y PRODUCTOS A LA BBDD -------------------------------------------------------- */
+  // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
+  const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
+
+  // En caso de que se estén cargando el producto buscado
+  if (isLoadingCategories) {
+
+    return (
+
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+
+    )
+
+  }
+
+  // Obtengo las productos de cada categoría y los guardo en una constante products (sobreescribí el nombre data) utilizando useGetProductsByCategoryQuery (ver -> shop.js) 
+  const { data: products, isLoading: isLoadingProducts} = useGetProductByCategoryQuery()
+
+  // En caso de que se estén cargando el producto buscado
+  if (isLoadingProducts) {
+
+    return (
+
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+
+    )
+
+  }
+
+
+    /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
 
   // Creo función para modificar el estado de keyword (Search)
   const handlerKeyword = (k) => {
@@ -89,6 +112,8 @@ const ProductsByCategory = ({ navigation, route }) => {
   const handleSetProductsCategory = (products) => { // 
     setProductsCategory(products) // 
   }
+
+
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSBYCATEGORY ------------------------------------------------------------------------------- */
 

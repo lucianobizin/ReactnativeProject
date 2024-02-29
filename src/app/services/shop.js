@@ -20,13 +20,7 @@ export const shopApi = createApi({
 
         // Defino el endpoint que trae los productos por categoría (view -> ProductsByCategories)
         getProductByCategory: builder.query({
-            query: (name) => `/products_market.json?orderBy="category"&equalTo="${name}"`,
-
-            // Transformo la respuesta en un array y la retorno
-            transformResponse: (response) => {
-                const data = Object.values(response); 
-                return data;
-            }
+            query: () => `/products_market.json`
         }),
 
         // Defino el endpoint que trae un producto específico (view -> ProductDetail)

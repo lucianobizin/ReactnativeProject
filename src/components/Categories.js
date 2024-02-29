@@ -16,7 +16,7 @@ const Categories = ({ navigation }) => {
     // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
     const {data:categories, isLoading} = useGetCategoriesQuery()
 
-    if (!categories) {
+    if (isLoading) {
         return <ActivityIndicator />; // O cualquier otro indicador de carga
     }
     // Obtengo los nombres de categoría del objeto categories mapeando la propiedad name (=categoría)
