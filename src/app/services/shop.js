@@ -4,7 +4,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // Creo la api --> shop api
 export const shopApi = createApi({
 
-    // Reduzco el estado de los datos trayendo solo lo necesario para 'shopApi'
+    // Especifica el nombre del slice del store de la app donde se almacenarán los reducers generados por la "api" (handler de fetchs)
+    // Los reducers son funciones puras que especifican cómo cambia el estado de una aplicación en respuesta a una acción -> arg (state, actions) y return -> nuevo estado
     reducerPath: "shopApi", 
     
     // Configuro la URL base a la que se dirigirán las consultas (ej. Firebase Realtime Database)

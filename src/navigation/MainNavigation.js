@@ -1,24 +1,16 @@
 // Importo componentes de react & react-native
 import { useState, useEffect } from 'react'
-import { View, StyleSheet, SafeAreaView, useWindowDimensions } from "react-native"
+import { StyleSheet, SafeAreaView, useWindowDimensions } from "react-native"
 
 // Importo componentes de react navigation
 import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-// Importo objetos globales de estilo de la app --> fuentes y colores 
-import fonts from '../utils/global/fonts.js'
-import colors from '../utils/global/colors.js'
+// Importo useSelector de Redux para traer la variable global de un slice del store
+import { useSelector } from 'react-redux'
 
-// Importo los componentes de las tab screens
-import ShopStack from './ShopStack.js'
-import CartStack from './CartStack.js'
-import OrdersStack from "./OrdersStack.js"
-
-// Importo el componente que administra los botones de la navegación tab
-import TabBarIcon from '../components/TabBarIcon.js'
-
-const Tab = createBottomTabNavigator();
+// Importo el comoponente de navegación TabNavigator (ShopStack, CartStack, OrdersStack) y de autenticación AuthStack (ver -> Register & Login)
+import TabNavigator from './TabNavigator.js'
+import AuthStack from './AuthStack.js'
 
 const MainNavigation = () => {
 
@@ -63,46 +55,13 @@ const MainNavigation = () => {
   
     */
 
+    // De todos los estados globales de la app (ver -> store) user almacenará el estado de la porción auth
+    const user = useSelector((state) => state.auth)
+
     return (
         <SafeAreaView style={{ flex: 1, zIndex: 6 }}>
             <NavigationContainer>
-                <Tab.Navigator
-                    initialRouteName='ShopStack'
-                    screenOptions={{
-                        headerShown: false,
-                        tabBarShowLabel: false,
-                        tabBarStyle: styles.tabBar
-                    }}
-                >
-                    <Tab.Screen
-                        name="ShopStack"
-                        component={ShopStack}
-                        options={{
-                            tabBarIcon: ({ focused }) => {
-                                return <TabBarIcon icon="home" text="Mercado" focused={focused} />
-                            }
-                        }}
-                        initialParams={{ portrait }} />
-                    <Tab.Screen
-                        name="CartStack"
-                        component={CartStack}
-                        options={{
-                            tabBarIcon: ({ focused }) => {
-                                return <TabBarIcon icon="shopping-cart" text="Carro" focused={focused} />
-                            }
-                        }}
-                    />
-                    <Tab.Screen
-                        name="OrdersStack"
-                        component={OrdersStack}
-                        options={{
-                            tabBarIcon: ({ focused }) => {
-                                return <TabBarIcon icon="list" text="Ordenes" focused={focused} />
-                            }
-                        }}
-                    />
-                </Tab.Navigator>
-
+                {user.idToken ? <TabNavigator portrait={portrait}/> : <AuthStack/>}
             </NavigationContainer>
         </SafeAreaView>
     )
@@ -111,25 +70,4 @@ const MainNavigation = () => {
 export default MainNavigation
 
 /* -------------------   DEFINICIÓN DE ESTILOS GENERALES   ---------------------------------------------- */
-const styles = StyleSheet.create({
-
-    tabBar: {
-        backgroundColor: colors.secondary,
-        shadowColor: "black",
-        elevation: 4,
-        position: "absolute",
-        bottom: 10,
-        left: 10,
-        right: 10,
-        borderRadius: 15,
-        height: 90,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-    }
-
-})
+const styles = StyleSheet.create({})
