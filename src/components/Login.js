@@ -19,8 +19,8 @@ const Login = ({ navigation }) => {
 
   const onSubmit = async () => {
     try {
-      const { data } = await triggerLogin({ email, password });
-      dispatch(setUser({ email: data.email, idToken: data.idToken }));
+      const { data } = await triggerLogin({ email, password })
+      dispatch(setUser({ email: data.email, idToken: data.idToken }))
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       // Aquí puedes agregar código para manejar el error, como mostrar un mensaje al usuario
