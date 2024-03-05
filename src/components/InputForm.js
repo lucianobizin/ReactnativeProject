@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 
+import { useEffect } from 'react'
+
 import fonts from '../utils/global/fonts.js'
 import colors from '../utils/global/colors.js'
 
-const InputForm = ({ label, value, onChangeTextFunction, isSecure, error }) => {
+const InputForm = ({ label, value, onChangeText, isSecure, error }) => {
 
     return (
 
@@ -13,7 +15,7 @@ const InputForm = ({ label, value, onChangeTextFunction, isSecure, error }) => {
 
             <TextInput
                 value={value}
-                onChangeText={onChangeTextFunction}
+                onChangeText={onChangeText}
                 style={styles.input}
                 secureTextEntry={isSecure}
             />

@@ -58,6 +58,10 @@ const MainNavigation = () => {
     // De todos los estados globales de la app (ver -> store) user almacenará el estado de la porción auth
     const user = useSelector((state) => state.auth)
 
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+
     return (
         <SafeAreaView style={{ flex: 1, zIndex: 6 }}>
             <NavigationContainer>

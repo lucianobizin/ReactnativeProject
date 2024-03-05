@@ -3,7 +3,7 @@ import colors from '../utils/global/colors.js'
 import fonts from '../utils/global/fonts.js'
 import InputForm from './InputForm.js'
 import SubmitButton from './SubmitButton.js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLoginMutation } from '../app/services/auth.js'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../features/auth/authSlice.js'
@@ -12,20 +12,33 @@ import { setUser } from '../features/auth/authSlice.js'
 const Login = ({ navigation }) => {
 
   const dispatch = useDispatch()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [triggerLogin] = useLoginMutation()
-
 
   const onSubmit = async () => {
     try {
+      console.log(email, password)
       const { data } = await triggerLogin({ email, password })
+      console.log(data)
       dispatch(setUser({ email: data.email, idToken: data.idToken }))
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       // Aquí puedes agregar código para manejar el error, como mostrar un mensaje al usuario
     }
   }
+
+  const onChangeTextFunction = (t) => {
+    setEmail(t)
+  }
+
+  useEffect(() => {
+    console.log(email)
+  }, [email])
+
+  useEffect(() => {
+    console.log(password)
+  }, [password])
 
   return (
 
@@ -38,7 +51,7 @@ const Login = ({ navigation }) => {
         <InputForm
           label="Email"
           value={email}
-          onChangeText={(t) => setEmail(t)}
+          onChangeText={onChangeTextFunction}
           isSecure={false}
           error=""
         />
