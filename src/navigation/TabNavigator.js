@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ShopStack from './ShopStack.js'
 import CartStack from './CartStack.js'
 import OrdersStack from "./OrdersStack.js"
+import ProfileStack from "./ProfileStack.js"
 
 // Importo el componente que administra los botones de la navegación tab
 import TabBarIcon from '../components/TabBarIcon.js'
@@ -17,7 +18,7 @@ import colors from '../utils/global/colors.js'
 // Instancio el componente de react navigation en la constante Tab
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = ({portrait}) => {
+const TabNavigator = ({ portrait }) => {
 
     /* -------------------   RENDERIZACIÓN DE PANTALLAS  --------------------------------------------------------------------- */
 
@@ -75,6 +76,15 @@ const TabNavigator = ({portrait}) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return <TabBarIcon icon="list" text="Ordenes" focused={focused} />
+                    }
+                }}
+            />
+            <Tab.Screen
+                name="ProfileStack"
+                component={ProfileStack}
+                options={{
+                    tabBarIcon: ({ focused }) => {
+                        return <TabBarIcon icon="user" text="Perfil" focused={focused} />
                     }
                 }}
             />

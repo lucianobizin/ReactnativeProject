@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit'
 // Defino el estado inicial del usuario (email=vacíos y idToken=0) -> Esto servirá para autenticación / navegación mediante JWT
 const initialState = {
     email: "",
-    idToken: ""
+    idToken: "",
+    localId: ""
 }
 
 // La porción del store de la app en la que voy a almacenar el estado de mi usuario se llama "auth"
@@ -17,8 +18,9 @@ export const authSlice = createSlice({
         setUser: (state, actions) => {
             console.log(actions.payload)
             state.email = actions.payload.email
-            state.idToken = actions.payload.idToken},
-        clearUser: (state) => state = {email: "", idToken: ""}
+            state.idToken = actions.payload.idToken
+            state.localId = actions.payload.localId},
+        clearUser: (state) => state = {email: "", idToken: "", localId: ""}
     }
 })
 

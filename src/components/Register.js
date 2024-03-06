@@ -116,7 +116,8 @@ const Register = ({ navigation }) => {
 
 
         try {
-            // validateFields()
+            
+            validateFields()
 
             // Ejecuta la función que envía los datos del usuario que se quiere registrar a la base de datos
             // Recibe data como respuesta, la cual posee el token de autenticación que se debe actualizar en el estado de authSlice
@@ -127,7 +128,8 @@ const Register = ({ navigation }) => {
             // En caso de que la respuesta posea un idToken, MainNavigation redirija al usuario a TabNavigator (ver -> MainNavigator.js -> const user)
             dispatch(setUser({
                 email: data.email,
-                idToken: data.idToken
+                idToken: data.idToken,
+                localId: data.localId
             }))
         } catch (error) {
             setError("Error al registrar. Por favor, intenta de nuevo.") // Actualiza el estado de error
@@ -147,79 +149,80 @@ const Register = ({ navigation }) => {
                 <InputForm
                     label="Nombre"
                     value={name}
-                    onChangeTextFunction={(t) => setName(t)}
+                    onChangeText={(t) => setName(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.name}
                 />
 
                 <InputForm
                     label="Apellido"
                     value={surname}
-                    onChangeTextFunction={(t) => setSurname(t)}
+                    onChangeText={(t) => setSurname(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.surname}
                 />
 
                 <InputForm
                     label="Email"
                     value={email}
-                    onChangeTextFunction={(t) => setEmail(t)}
+                    onChangeText={(t) => setEmail(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.email}
                 />
 
                 <InputForm
                     label="Móvil"
                     value={phone}
-                    onChangeTextFunction={(t) => setPhone(t)}
+                    onChangeText={(t) => setPhone(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.phone}
                 />
 
                 <InputForm
                     label="DNI / Pasaporte"
                     value={idNumber}
-                    onChangeTextFunction={(t) => setIdNumber(t)}
+                    onChangeText={(t) => setIdNumber(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.idNumber}
                 />
 
                 <InputForm
                     label="Dirección"
                     value={address}
-                    onChangeTextFunction={(t) => setAddress(t)}
+                    onChangeText={(t) => setAddress(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.address}
                 />
 
                 <InputForm
                     label="Provincia"
                     value={province}
-                    onChangeTextFunction={(t) => setProvince(t)}
+                    onChangeText={(t) => setProvince(t)}
                     isSecure={false}
-                    error=""
+                    error={newErrors.province}
                 />
 
                 <InputForm
                     label="Contraseña"
                     value={password}
-                    onChangeTextFunction={(t) => setPassword(t)}
+                    onChangeText={(t) => setPassword(t)}
                     isSecure={true}
-                    error=""
+                    error={newErrors.password}
                 />
 
                 <InputForm
                     label="Confirmación de contraseña"
                     value={confirmedPassword}
-                    onChangeTextFunction={(t) => setConfirmedPassword(t)}
+                    onChangeText={(t) => setConfirmedPassword(t)}
                     isSecure={true}
-                    error=""
+                    error={newErrors.confirmedPassword}
                 />
 
                 <View style={styles.submitButton}>
                     <SubmitButton onPress={onSubmit} title="Registrarme" />
-                    {error && <Text style={styles.errorText}>{error}</Text>}
                 </View>
+
+                {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <Text style={styles.sub}>¿Ya tienes una cuenta en Frutizia?</Text>
 
@@ -285,7 +288,7 @@ const styles = StyleSheet.create({
     },
     sub: {
         fontSize: 16,
-        fontFamily: fonts.lobsterRegular
+        fontFamily: fonts.lobsterRegular,
     },
     subLink: {
         fontSize: 16,
@@ -304,5 +307,10 @@ const styles = StyleSheet.create({
         fontFamily: fonts.josefinSansBold,
         fontWeight: "bold"
     },
+    errorText: {
+        fontSize: 14,
+        color: colors.tertiary,
+        marginBottom: 15
+    }
 
 })
