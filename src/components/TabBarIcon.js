@@ -26,7 +26,7 @@ const TabBarIcon = ({ icon, focused, text }) => {
 
     return (
         <View style={styles.container}>
-            <Entypo name={icon} size={25} color={focused ? colors.white : colors.primary} />
+            <Entypo name={icon} size={25} color={focused ? colors.white : colors.black} />
             <Text style={[styles.textFocused, !focused && styles.textNotFocused]}>{text}</Text>
         </View>
     )
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     textNotFocused: {
-        color: "gray",
+        color: colors.black,
         textAlign: "center",
         fontSize: 15
     }

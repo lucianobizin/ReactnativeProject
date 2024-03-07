@@ -4,15 +4,16 @@ import AddButton from './AddButton.js'
 import * as ImagePicker from 'expo-image-picker'
 import { useGetImageQuery, usePutImageMutation } from '../app/services/profile.js'
 import { useSelector } from 'react-redux'
+import colors from '../utils/global/colors.js'
 
 const ImageSelector = ({ navigation }) => {
 
     const [image, setImage] = useState("")
     const [triggerImage] = usePutImageMutation()
     const localId = useSelector((state) => state.auth.localId)
-    const {data, isSuccess} = useGetImageQuery(localId)
+    const { data, isSuccess } = useGetImageQuery(localId)
 
-    useEffect( () => {
+    useEffect(() => {
         if (isSuccess && data) setImage(data.image)
     }, [isSuccess, data])
 
@@ -44,7 +45,7 @@ const ImageSelector = ({ navigation }) => {
                 style={styles.image}
                 resizeMode='cover'
             />
-            <AddButton title={"Tomar foto"} onPress={pickImage} />
+            <AddButton title={"Tomar nueva foto"} onPress={pickImage} />
             <AddButton title={"Confirmar foto"} onPress={confirmImage} />
         </View>
     )
@@ -56,10 +57,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        marginTop: 20
+        backgroundColor: colors.primary,
+        alignItems: "center",
     },
     image: {
         width: 200,
-        height: 200
+        height: 200,
+        borderRadius: 180,
+        marginTop: 80,
     }
 })

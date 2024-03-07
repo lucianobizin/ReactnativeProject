@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     },
     HeaderHomeText: {
         fontFamily: fonts.joseginSansBold,
-        fontSize: 24
+        fontSize: 32,
     },
     HeaderProdByCatTitle: {
         backgroundColor: colors.white,

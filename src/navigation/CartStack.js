@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
     },
     HeaderProdByCatText: {
         fontFamily: fonts.joseginSansBold,
-        fontSize: 22
+        fontSize: 26
     }
 })

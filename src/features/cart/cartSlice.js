@@ -53,6 +53,22 @@ export const cartSlice = createSlice({
             state.total = state.items.reduce((acc, item) => acc = acc + (item.reference_price * item.quantity), 0)
         },
 
+        updateCartItem: (state, actions) => {
+            const index = state.items.findIndex((item) => item.id === actions.payload.product.id)
+            if (index !== -1) {
+
+                state.items = state.items.map((item) => {
+                    if (item.id === actions.payload.product.id) {
+                        return { ...item, quantity: actions.payload.count }
+                    } else {
+                        return item
+                    }
+                })
+            }
+
+            state.total = state.items.reduce((acc, item) => acc = acc + (item.reference_price * item.quantity), 0)
+        },
+
         // Defino la acción que borrará un producto del carrito (queda ponerle un contador para descontar de a uno)
         deleteCartItem: (state, actions) => {
             state.items = state.items.filter((item) => item.id !== actions.payload)
@@ -62,7 +78,7 @@ export const cartSlice = createSlice({
 })
 
 // Exporto y agrego addCartItem como acción posible de la porción del estado de la app "cartSlice"
-export const { addCartItem, deleteCartItem } = cartSlice.actions
+export const { addCartItem, deleteCartItem, updateCartItem } = cartSlice.actions
 
 // Exporto el reducer de cartSlice para que se pueda asignar a store.js como tal
 export default cartSlice.reducer

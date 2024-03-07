@@ -2,21 +2,30 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 
 // Importo la función de redux que permite despachar acciones para actualizar estados
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
-import { deleteCartItem } from '../features/cart/cartSlice.js'
+import { deleteCartItem, updateCartItem } from '../features/cart/cartSlice.js'
 
 // Importo componentes visuales de librerías externas
 import { Entypo } from "@expo/vector-icons"
 
 // Importo el archivo de colores de estilo
 import colors from '../utils/global/colors.js'
+import { useEffect } from 'react'
 
 const CartItem = ({ item }) => {
 
+    useEffect( () => {
+        console.log(item.quantity)
+    }, [item.quantity])
+
     // Instancio el despachante
-    const dispatch = useDispatch() 
+    const dispatch = useDispatch()
+
+    // Traigo la variable count (ver -> counterSlice.js)
+    const count = useSelector((state) => state.counter.value)
+
 
     /* -------------------   RENDERIZACIÓN DE PANTALLA DEL CARRO  --------------------------------------------------------------------- */
 
@@ -46,10 +55,21 @@ const CartItem = ({ item }) => {
                 <Text style={styles.text2}>Cantidad: {item.quantity} {item.size_format}</Text>
                 <Text style={styles.text2}>Precio por {item.size_format}: {item.reference_price} €</Text>
                 <Text style={styles.text2}>Subtotal: {(item.reference_price * item.quantity).toFixed(2)} €</Text>
-            
             </View>
-            
-            <Pressable onPress={ () => dispatch(deleteCartItem(item.id))}>
+
+            <View>
+                <Pressable style={styles.button} onPress={() => dispatch(updateCartItem({product:item, count:item.quantity-1}))}>
+                    <Text style={styles.symbol}>-</Text>
+                </Pressable>
+                <Text>{item.quantity}</Text>
+
+                <Pressable style={styles.button} onPress={() => dispatch(updateCartItem({product:item, count:item.quantity+1}))}>
+                    <Text style={styles.symbol}>+</Text>
+                </Pressable>
+
+            </View>
+
+            <Pressable onPress={() => dispatch(deleteCartItem(item.id))}>
                 <Entypo name="trash" size={30} color={colors.secondary} />
             </Pressable>
 
@@ -82,7 +102,7 @@ const styles = StyleSheet.create({
             height: 2,
         },
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,        
+        shadowRadius: 3.84,
     },
     imageSpan: {
         width: 75,

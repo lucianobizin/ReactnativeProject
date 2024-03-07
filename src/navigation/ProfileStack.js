@@ -40,7 +40,7 @@ const ProfileStack = () => {
             screenOptions={({ navigation }) => {
                 return {
                     header: () => {
-                        return <Header title='Profile' style={[styles.HeaderProdByCatTitle, styles.HeaderProdByCatText]} navigation={navigation} />
+                        return <Header title='Perfil' style={[styles.HeaderProdByCatTitle, styles.HeaderProdByCatText]} navigation={navigation} />
                     }
                 }
             }}>
@@ -62,10 +62,12 @@ const styles = StyleSheet.create({
         borderTopColor: "white",
         borderBottomColor: "white",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        flexDirection: "row",
+        textAlign: "center"
     },
     HeaderProdByCatText: {
         fontFamily: fonts.joseginSansBold,
-        fontSize: 22
+        fontSize: 30
     }
 }) 

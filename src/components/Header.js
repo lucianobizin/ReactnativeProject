@@ -27,7 +27,7 @@ const Header = ({ title = "Frutizia", style, navigation }) => {
   return (
     <View style={[style[0], styles.container]}>
       {navigation.canGoBack() && <Pressable style={styles.goBack} onPress={() => navigation.goBack()}>
-        <AntDesign name="leftcircle" size={25} color={colors.primary} />
+        <AntDesign name="leftcircle" size={40} color={colors.primary} />
       </Pressable>}
       <Text style={style[1]}>{title}</Text>
     </View>
@@ -38,6 +38,9 @@ export default Header
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     position: "relative",
     // Sombras para Android
     elevation: 8,
@@ -52,9 +55,9 @@ const styles = StyleSheet.create({
   },
   goBack: {
     position: "absolute",
-    paddingVertical: 10,
     transform: [{ scale: 0.70 }],
-    left: 18
+    left: 20,
+    top: 24
   }
 
 })
