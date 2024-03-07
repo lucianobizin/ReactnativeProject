@@ -1,10 +1,10 @@
 // Importo componentes de react & react-native
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
-import ProductByCategory from '../components/ProductByCategory.js'
-import Search from '../components/Search.js'
+import ProductByCategory from '../components/Cards/ProductByCategory.js'
+import Search from '../components/Search/Search.js'
 
 // Importo las categorías y productos desde Firebase (categories_market.json y products_market.json)
 import { useGetCategoriesQuery, useGetProductByCategoryQuery } from '../app/services/shop.js'
@@ -31,35 +31,8 @@ const ProductsByCategory = ({ navigation, route }) => {
   // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
   const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
 
-  // // En caso de que se estén cargando el producto buscado
-  // if (isLoadingCategories) {
-
-  //   return (
-
-  //     <View style={styles.loadingContainer}>
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //     </View>
-
-  //   )
-
-  // }
-
   // Obtengo las productos de cada categoría y los guardo en una constante products (sobreescribí el nombre data) utilizando useGetProductsByCategoryQuery (ver -> shop.js) 
   const { data: products, isLoading: isLoadingProducts } = useGetProductByCategoryQuery()
-
-  // // En caso de que se estén cargando los productos
-  // if (isLoadingProducts) {
-
-  //   return (
-
-  //     <View style={styles.loadingContainer}>
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //     </View>
-
-  //   )
-
-  // }
-
 
   /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
 

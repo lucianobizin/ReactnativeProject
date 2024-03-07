@@ -5,13 +5,13 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
-import { deleteCartItem, updateCartItem } from '../features/cart/cartSlice.js'
+import { deleteCartItem, updateCartItem } from '../../features/cart/cartSlice.js'
 
 // Importo componentes visuales de librerías externas
 import { Entypo } from "@expo/vector-icons"
 
 // Importo el archivo de colores de estilo
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 import { useEffect } from 'react'
 
 const CartItem = ({ item }) => {

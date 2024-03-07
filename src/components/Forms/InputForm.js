@@ -2,8 +2,8 @@ import { StyleSheet, Text, View, TextInput } from 'react-native'
 
 import { useEffect } from 'react'
 
-import fonts from '../utils/global/fonts.js'
-import colors from '../utils/global/colors.js'
+import fonts from '../../utils/global/fonts.js'
+import colors from '../../utils/global/colors.js'
 
 const InputForm = ({ label, value, onChangeText, isSecure, error }) => {
 

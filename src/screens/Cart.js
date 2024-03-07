@@ -9,7 +9,7 @@ import colors from '../utils/global/colors.js'
 import fonts from '../utils/global/fonts.js'
 
 // Importo el componente que renderiza las tarjetas de Cart (1 por producto)
-import CartItem from "../components/CartItem.js"
+import CartItem from "../components/Cards/CartItem.js"
 
 const Cart = () => {
 

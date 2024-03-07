@@ -10,7 +10,7 @@ import OrdersStack from "./OrdersStack.js"
 import ProfileStack from "./ProfileStack.js"
 
 // Importo el componente que administra los botones de la navegación tab
-import TabBarIcon from '../components/TabBarIcon.js'
+import TabBarIcon from '../components/TabBarIcon/TabBarIcon.js'
 
 // Importo objetos globales de estilo de la app --> colores 
 import colors from '../utils/global/colors.js'

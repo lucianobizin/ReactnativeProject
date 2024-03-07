@@ -2,10 +2,10 @@
 import { Pressable, StyleSheet, Text } from 'react-native'
 
 // Importo el componente que genera sombras ShadowPrimary (aplicado a las tarjetas de categorías de productos)
-import ShadowPrimary from './wrappers/ShadowPrimary.js'
+import ShadowPrimary from '../Wrappers/ShadowPrimary.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
-import fonts from '../utils/global/fonts.js'
+import fonts from '../../utils/global/fonts.js'
 
 // El componente CardCategory recibe item (nombre de categoría), cardContainer (estilo), selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
 const CardCategory = ({ item, cardContainer, navigation }) => {

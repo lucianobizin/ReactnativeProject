@@ -2,7 +2,7 @@
 import { View, StyleSheet } from "react-native"
 
 // Importo los componentes de las pantalla Home: Header y Categories
-import Categories from '../components/Categories.js'
+import Categories from '../components/Categories/Categories.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import colors from '../utils/global/colors.js'

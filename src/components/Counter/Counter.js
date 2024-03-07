@@ -5,13 +5,13 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Importo la acción que se despachará para actualizar el estado del carrito (navigation -> CartStack.js)
-import { addCartItem } from '../features/cart/cartSlice.js'
+import { addCartItem } from '../../features/cart/cartSlice.js'
 
 // Importo las acciones que se despacharán para actualizar el contador de productos (navigation -> CartStack.js)
-import { increment, decrement, updatingCount } from '../features/counter/counterSlice.js'
+import { increment, decrement, updatingCount } from '../../features/counter/counterSlice.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 const Counter = ({ product, productId }) => {
 

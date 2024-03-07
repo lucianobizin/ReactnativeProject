@@ -5,8 +5,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // Importo el componente de las órdenes de compra
-import Orders from '../components/Orders.js'
-import Header from '../components/Header.js'
+import Orders from '../components/Orders/Orders.js'
+import Header from '../components/Header/Header.js'
 
 // Importo los archivos de fuentes y colores
 import colors from '../utils/global/colors.js'

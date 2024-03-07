@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Entypo } from "@expo/vector-icons"
 
 // Importo el archivo de colores
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 
 const TabBarIcon = ({ icon, focused, text }) => {

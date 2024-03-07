@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Feather } from "@expo/vector-icons"
 
 // Import archivos de estilo de colores y fuentes 
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 const OrderItem = ({ total, createdAt, item }) => {
 

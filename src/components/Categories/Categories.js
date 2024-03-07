@@ -5,10 +5,10 @@ import { StyleSheet, FlatList, Dimensions, ActivityIndicator } from 'react-nativ
 import CardCategory from './CardCategory.js'
 
 // Importo las categorías desde Firebase (categories_market.json)
-import { useGetCategoriesQuery } from '../app/services/shop.js' 
+import { useGetCategoriesQuery } from '../../app/services/shop.js' 
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 // El componente Categories recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
 const Categories = ({ navigation }) => {

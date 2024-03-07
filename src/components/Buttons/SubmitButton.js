@@ -2,8 +2,8 @@
 import { StyleSheet, Text, Pressable } from 'react-native'
 
 // Importo objetos globales de estilo de la app --> colores y fuentes
-import colors from '../utils/global/colors.js'
-import fonts from '../utils/global/fonts.js'
+import colors from '../../utils/global/colors.js'
+import fonts from '../../utils/global/fonts.js'
 
 const SubmitButton = ({ onPress, title }) => {
     return (

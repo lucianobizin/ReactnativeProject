@@ -5,8 +5,8 @@ import { StyleSheet } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
-import Header from '../components/Header.js'
-import Cart from '../components/Cart.js'
+import Header from '../components/Header/Header.js'
+import Cart from '../screens/Cart.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import fonts from '../utils/global/fonts.js'

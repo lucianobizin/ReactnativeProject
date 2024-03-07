@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { AntDesign } from "@expo/vector-icons"
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
-import colors from '../utils/global/colors'
+import colors from '../../utils/global/colors'
 
 // El componente Header recibe title (texto a renderizar) y HeaderStyle([0]=container, [1]=texto)
 const Header = ({ title = "Frutizia", style, navigation }) => {

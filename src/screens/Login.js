@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import colors from '../utils/global/colors.js'
+import colors from "../utils/global/colors.js"
 import fonts from '../utils/global/fonts.js'
-import InputForm from './InputForm.js'
-import SubmitButton from './SubmitButton.js'
+import InputForm from '../components/Forms/InputForm.js'
+import SubmitButton from '../components/Buttons/SubmitButton.js'
 import { useState, useEffect } from 'react'
 import { useLoginMutation } from '../app/services/auth.js'
 import { useDispatch } from 'react-redux'

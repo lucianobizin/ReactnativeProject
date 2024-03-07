@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { useEffect, useState } from 'react'
-import AddButton from './AddButton.js'
+import AddButton from '../components/Buttons/AddButton.js'
 import * as ImagePicker from 'expo-image-picker'
 import { useGetImageQuery, usePutImageMutation } from '../app/services/profile.js'
 import { useSelector } from 'react-redux'

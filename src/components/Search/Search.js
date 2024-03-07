@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, TextInput, View, Keyboard, Text } from 'react-na
 import { AntDesign } from "@expo/vector-icons"
 
 // Importo objetos globales de estilo de la app --> fuentes y colores
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 // El componente Search recibe el handler del setKeyword y retorna la renderización de los productos cuyo nombre incluyan la keyword
 const Search = ({ searchStyle, handlerKeyword }) => {

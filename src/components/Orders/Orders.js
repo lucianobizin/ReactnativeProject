@@ -2,7 +2,7 @@
 import { FlatList } from 'react-native'
 
 // Importo el archivo con los datos de las órdenes de compra (por ahora ficticio)
-import orders from "../utils/data/orders.json"
+import orders from "../../utils/data/orders.json"
 
 // Importo el componente de las tarjetas de órdenes de compra
 import OrderItem from './OrderItem.js'

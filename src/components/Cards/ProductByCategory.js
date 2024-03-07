@@ -2,7 +2,7 @@
 import { StyleSheet, Text, View, Image, Pressable, useWindowDimensions } from 'react-native';
 
 // Importo objetos globales de estilo de la app --> fuentes y colores
-import colors from '../utils/global/colors.js';
+import colors from '../../utils/global/colors.js';
 
 // El componente ProductByCategory recibe item (producto de la categoría elegida por el usuario) y selectProductId (que distingue entre ProductsByCategory y ProductDetail) 
 const ProductByCategory = ({ item, navigation }) => {

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import colors from '../utils/global/colors.js'
+import colors from '../../utils/global/colors.js'
 
 const AddButton = ({ title, onPress }) => {
   return (

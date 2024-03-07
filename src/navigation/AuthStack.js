@@ -9,11 +9,11 @@ import colors from '../utils/global/colors.js'
 import fonts from '../utils/global/fonts.js'
 
 // Importo el Header que se utilizará en ambas pantallas (ver -> Login y Register)
-import Header from '../components/Header.js'
+import Header from '../components/Header/Header.js'
 
 // Importo los componentes de registro y login
-import Register from '../components/Register.js'
-import Login from '../components/Login.js'
+import Register from '../screens/Register.js'
+import Login from '../screens/Login.js'
 
 
 // Instancio el componente de react navigation en la constante Tab

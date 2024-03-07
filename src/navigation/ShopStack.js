@@ -10,7 +10,7 @@ import ProductsByCategory from "../screens/ProductsByCategory.js"
 import ProductDetail from '../screens/ProductDetail.js'
 
 // Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
-import Header from '../components/Header.js';
+import Header from '../components/Header/Header.js';
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import fonts from '../utils/global/fonts.js'

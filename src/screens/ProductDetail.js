@@ -2,7 +2,7 @@
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 
 // Importo el componente del contador
-import Counter from '../components/Counter.js'
+import Counter from '../components/Counter/Counter.js'
 
 // Importo la función que traerá el producto por id desde Firebase (products_market.json)
 import { useGetProductByIdQuery } from '../app/services/shop.js'
