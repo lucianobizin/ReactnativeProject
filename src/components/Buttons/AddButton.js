@@ -16,8 +16,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     width: 225,
     paddingVertical: 8,
-    marginTop: 40,
+    marginTop: 20,
     borderRadius: 25,
+    borderColor: colors.primary,
+    borderWidth: 2,
     // Sombras para Android
     elevation: 8,
     // Sombras para iOS

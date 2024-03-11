@@ -20,8 +20,6 @@ import InputForm from '../components/Forms/InputForm.js'
 import SubmitButton from '../components/Buttons/SubmitButton.js'
 
 
-
-
 const Register = ({ navigation }) => {
 
     /* -------------------   DECLARACIÓN DE USESTATE PARA LAS SCREENS  ------------------------------------------------------------------------ */
@@ -116,7 +114,7 @@ const Register = ({ navigation }) => {
 
 
         try {
-            
+
             validateFields()
 
             // Ejecuta la función que envía los datos del usuario que se quiere registrar a la base de datos
@@ -136,6 +134,22 @@ const Register = ({ navigation }) => {
         }
 
     }
+
+    /* -------------------   RENDERIZACIÓN DE REGISTER  ---------------------------------------------------------------------------------------- */
+
+    /* 
+     
+      COMPONENTES / PANTALLAS
+    
+      Inputs: Agregar información
+      Pressable: Registrarse o loguearse
+    
+      LOGICA DE PANTALLAS
+     
+      La app permite a los usuarios registrarse sino no pueden ingresar a la plataforma de venta
+      En caso de que no se respeten determinados criterios preestablecidos se notificarán errores en rojo
+      
+    */
 
 
     return (

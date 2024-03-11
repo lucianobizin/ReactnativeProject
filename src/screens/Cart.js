@@ -1,8 +1,11 @@
 // Importo componentes de react & react-native
 import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native'
 
-// Importo el useSelector de redux que maneja el estado actualizado del carrito
-import { useSelector } from 'react-redux'
+// Importo el useSelector y useDispatch de redux que maneja el estado actualizado del carrito
+import { useSelector, useDispatch } from 'react-redux'
+
+// Import la función global de borrar carrito
+import { deleteCart } from '../features/cart/cartSlice.js'
 
 // Import el archivo de colores y fuentes
 import colors from '../utils/global/colors.js'
@@ -11,10 +14,46 @@ import fonts from '../utils/global/fonts.js'
 // Importo el componente que renderiza las tarjetas de Cart (1 por producto)
 import CartItem from "../components/Cards/CartItem.js"
 
+// Importo la función que desencadena el método POST
+import { usePostOrderMutation } from '../app/services/orders.js'
+import { useEffect } from 'react'
+
 const Cart = () => {
+
+    // Genero el dispatch para traer la función global de borrar carrito
+    const dispatch = useDispatch()
 
     // Traigo el estado del carrito utilizando useSelector (ver -> store.js y cartSlice.js)
     const cart = useSelector( (state) => state.cart)
+
+    // Traigo el estado de localId del usuario conectado utilizando useSelector
+    const localId = useSelector( (state) => state.auth.localId)
+
+    useEffect (() => {
+        console.log(localId)
+    }, [localId])
+    
+    // Genero el método trigger que desencadenará la llamada a la API con el método POST para ingresar una nueva orden
+    const [triggerAddOrder] = usePostOrderMutation()
+
+    // Creo la función manejadora que desencadenará triggerAddOrder
+    handleAppOrders = async () => {
+
+        // Creamos la fecha y hora de la órden
+        const createdAt = new Date().toLocaleString()
+        
+        // Creamos la orden con la fecha actual y el carrito
+        const order = {
+            createdAt,
+            ...cart
+        }
+
+        // Desencadeno el trigger del post de la orden
+        await triggerAddOrder({localId, order})
+        
+        // Borro el carrito
+        await dispatch(deleteCart())
+    }
     
 
     /* -------------------   RENDERIZACIÓN DE PANTALLA DEL CARRO  --------------------------------------------------------------------- */
@@ -43,7 +82,7 @@ const Cart = () => {
 
             <View style={styles.confirmContainer}>
                 <Text style={styles.confirmText}> Total: $ {cart.total.toFixed(2)}</Text>
-                <Pressable style={styles.pressableButton} onPress={() => console.log(`Procesando compra ${cart.total}`)}>
+                <Pressable style={styles.pressableButton} onPress={handleAppOrders}>
                     <Text style={styles.confirmText}>Comprar</Text>
                 </Pressable>
 

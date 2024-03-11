@@ -15,6 +15,7 @@ import authReducer from '../features/auth/authSlice.js'
 import { shopApi } from './services/shop.js'
 import { authApi } from './services/auth.js'
 import { profileApi } from './services/profile.js'
+import { ordersApi } from './services/orders.js'
 
 
 // Defino, configuro y exporto la constante store que se utiliza en el Provider de app.js
@@ -27,13 +28,14 @@ export const store = configureStore({
         auth: authReducer,
         [shopApi.reducerPath]: shopApi.reducer, // Agrego el reductor de shopApi al store
         [authApi.reducerPath]: authApi.reducer, // Agrego el reductor de authApi al store
-        [profileApi.reducerPath]: profileApi.reducer // Agrego el reductor de profileApi al store
+        [profileApi.reducerPath]: profileApi.reducer, // Agrego el reductor de profileApi al store
+        [ordersApi.reducerPath]: ordersApi.reducer // Agrego el reductor de ordersApi al store
     
     },
 
     // Se agrega un  middleware de la api que habilita el cacheo, la invalidación y el polling y otras funciones de rtk-query
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(shopApi.middleware, authApi.middleware, profileApi.middleware),
+        getDefaultMiddleware().concat(shopApi.middleware, authApi.middleware, profileApi.middleware, ordersApi.middleware),
 
 })
 

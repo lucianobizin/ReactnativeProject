@@ -73,12 +73,17 @@ export const cartSlice = createSlice({
         deleteCartItem: (state, actions) => {
             state.items = state.items.filter((item) => item.id !== actions.payload)
             state.total = state.items.reduce((acc, item) => acc = acc + item.reference_price * item.quantity, 0)
+        },
+
+        deleteCart: (state) => {
+            state.items = [],
+            state.total = 0
         }
     }
 })
 
 // Exporto y agrego addCartItem como acción posible de la porción del estado de la app "cartSlice"
-export const { addCartItem, deleteCartItem, updateCartItem } = cartSlice.actions
+export const { addCartItem, deleteCartItem, updateCartItem, deleteCart } = cartSlice.actions
 
 // Exporto el reducer de cartSlice para que se pueda asignar a store.js como tal
 export default cartSlice.reducer

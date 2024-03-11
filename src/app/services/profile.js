@@ -21,15 +21,22 @@ export const profileApi = createApi({
             })
         }),
         getImage: builder.query({
-            query: (localId) => ({
-                url: `/profile/${localId}.json`,
-                method: "GET"
+            query: (localId) => `/profile/${localId}.json`
+        }),
+        putUserLocation: builder.mutation({
+            query: ({localId, locationFormatted}) => ({
+                url: `/userLocation/${localId}.json`,
+                method: "PUT",
+                body: locationFormatted
             })
+        }),
+        getUserLocation: builder.query({
+          query: (localId) => (`/userLocation/${localId}.json`)
         })
 
     })
 
 })
 
-// Exporto las funciones (--query por ser gets) que ejecutan los endpoints que pertenencen al objeto shopApi
-export const {usePutImageMutation, useGetImageQuery} = profileApi   
+// Exporto las funciones (--query por ser gets y --mutation por ser post/put) que ejecutan los endpoints que pertenencen al objeto profileApi
+export const {usePutImageMutation, usePutUserLocationMutation, useGetImageQuery, useGetUserLocationQuery} = profileApi   

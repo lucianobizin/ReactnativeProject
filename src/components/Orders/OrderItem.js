@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons"
 // Import archivos de estilo de colores y fuentes 
 import colors from '../../utils/global/colors.js'
 
-const OrderItem = ({ total, createdAt, item }) => {
+const OrderItem = ({ order }) => {
 
     /* -------------------   RENDERIZACIÓN DE TARJETAS DE ORDENES DE COMPRA --------------------------------------------------------------------- */
 
@@ -23,13 +23,18 @@ const OrderItem = ({ total, createdAt, item }) => {
    
     */
 
+    const dateTime = order.createdAt.split(",")
+    const data = dateTime[0]
+    const time = dateTime[1]
+
     return (
 
         <View style={styles.card}>
 
             <View style={styles.textContainer}>
-                <Text style={styles.text}> Creado: {new Date(createdAt * 1000).toLocaleString()}</Text>
-                <Text style={styles.text2}> Total: $ {total}</Text>
+                <Text style={styles.text}> Fecha: {data}</Text>
+                <Text style={styles.text}> Hora: {time}</Text>
+                <Text style={styles.text2}> Total: {order.total} €</Text>
             </View>
 
             <Feather name="search" size={30} color="black" />
@@ -45,7 +50,7 @@ export default OrderItem
 const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.white,
-        borderColor: colors.white,
+        borderColor: colors.primary,
         padding: 20,
         margin: 10,
         borderWidth: 2,
@@ -53,15 +58,25 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         height: 100,
-        alignItems: "center"
+        alignItems: "center",
+        // Sombras para Android
+        elevation: 8,
+        // Sombras para iOS
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     textContainer: {
         width: "70%"
     },
     text: {
-        color: colors.secondary
+        color: colors.black
     },
     text2: {
-        color: colors.secondary
+        color: colors.black
     }
 })

@@ -4,15 +4,15 @@ import { StyleSheet } from 'react-native'
 // Importo componentes de react navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-// Importo los componentes de las pantallas principales de la app: Home, Productos por categoría y Detalle de producto
+// Importo los componentes de las pantallas principales de la app
 import Header from '../components/Header/Header.js'
+import Profile from '../screens/Profile.js'
+import ImageSelector from '../screens/ImageSelector.js'
+import LocationSelector from '../screens/LocationSelector.js'
 
 // Importo objetos globales de estilo de la app --> fuentes y colores 
 import fonts from '../utils/global/fonts.js'
 import colors from '../utils/global/colors.js'
-
-import Profile from '../screens/Profile.js'
-import ImageSelector from '../screens/ImageSelector.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +47,7 @@ const ProfileStack = () => {
 
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ImageSelector" component={ImageSelector} />
+            <Stack.Screen name="LocationSelector" component={LocationSelector} />
 
         </Stack.Navigator>
     )
