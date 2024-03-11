@@ -19,9 +19,11 @@ import fonts from '../utils/global/fonts.js'
 import InputForm from '../components/Forms/InputForm.js'
 import SubmitButton from '../components/Buttons/SubmitButton.js'
 
+import config from '../app/config/config.js'
 
 const Login = ({ navigation }) => {
 
+  console.log(config)
   /* -------------------   DECLARACIÓN DE VARIABLES DE LA SCREEN  ------------------------------------------------------------------ */
 
   // Instancio dispatch para despachar reducers

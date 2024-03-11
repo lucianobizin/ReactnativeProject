@@ -1,5 +1,13 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+# launch.json
+.vscode/
+launch.json
+
+# config
+.config/
+config.js
+
 # dependencies
 node_modules/
 

@@ -1,3 +1,6 @@
+// Importo variables de entorno
+import config from '../config/config.js'
+
 // Importo los componentes de redux query que permiten crear la api y hacer los fetchs
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
@@ -9,7 +12,7 @@ export const profileApi = createApi({
     reducerPath: "profileApi", 
     
     // Configuro la URL base a la que se dirigirán las consultas (ej. Firebase Realtime Database)
-    baseQuery: fetchBaseQuery({baseUrl:"https://frutizia-default-rtdb.europe-west1.firebasedatabase.app"}),
+    baseQuery: fetchBaseQuery({baseUrl: config.Frutizia.FRUTIZIA_BASE_URL}),
 
     // Defino los endpoints para realizar consultas
     endpoints: (builder) => ({

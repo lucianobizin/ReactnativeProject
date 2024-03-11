@@ -1,3 +1,6 @@
+// Importo las varibales de entorno
+import config from '../config/config.js'
+
 // Importo los componentes de redux query que permiten crear la api (= handler de fetchs más pro) y hacer los fetchs
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
@@ -15,14 +18,14 @@ export const authApi =  createApi({
 
         register: builder.mutation({
             query: (user) => ({
-                url: "accounts:signUp?key=AIzaSyDzvu9GMSEXVlYkSpEx_cl8z9s3vS3RYCY",
+                url: `accounts:signUp?key=${config.Google.GOOGLE_API}`,
                 method: "POST",
                 body: user
             })
         }), 
         login: builder.mutation({
             query: (user) => ({
-                url: "accounts:signInWithPassword?key=AIzaSyDzvu9GMSEXVlYkSpEx_cl8z9s3vS3RYCY",
+                url: `accounts:signInWithPassword?key=${config.Google.GOOGLE_API}`,
                 method: "POST",
                 body: user
             })
