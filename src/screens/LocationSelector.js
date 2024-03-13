@@ -19,6 +19,8 @@ import { usePutUserLocationMutation } from '../app/services/profile.js'
 
 // Importo las fuentes y los colores
 import fonts from '../utils/global/fonts.js'
+
+// Importo las variables de entorno
 import config from '../app/config/config.js'
 
 

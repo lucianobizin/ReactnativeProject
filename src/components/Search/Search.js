@@ -1,5 +1,7 @@
-// Importo componentes de react & react-native
-import { useEffect, useState } from 'react'
+// Importo el hook useState de react
+import { useState } from 'react'
+
+// Importo componentes general de react native
 import { Pressable, StyleSheet, TextInput, View, Keyboard, Text } from 'react-native'
 
 // Importo librerías externas

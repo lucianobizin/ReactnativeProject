@@ -1,5 +1,5 @@
 // Importo componentes de react & react-native
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 // Importo componentes de react navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack'

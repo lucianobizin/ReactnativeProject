@@ -1,18 +1,40 @@
-// Importo componentes de react & react-native
+// Importo los hooks useState y useEffect de react
 import { useState, useEffect } from 'react'
+
+// Importo componentes principales de react-native
 import { StyleSheet, SafeAreaView, useWindowDimensions } from "react-native"
 
 // Importo componentes de react navigation
 import { NavigationContainer } from '@react-navigation/native'
 
-// Importo useSelector de Redux para traer la variable global de un slice del store
-import { useSelector } from 'react-redux'
+// Importo useSelector y useDispatch de Redux para traer la variable global de un slice del store y traer el estado de user
+import { useDispatch, useSelector } from 'react-redux'
+
+// Importo setUser que me permite setear el estado del usuario
+import { setUser } from '../features/auth/authSlice.js'
 
 // Importo el comoponente de navegación TabNavigator (ShopStack, CartStack, OrdersStack) y de autenticación AuthStack (ver -> Register & Login)
 import TabNavigator from './TabNavigator.js'
 import AuthStack from './AuthStack.js'
 
+// Importo la función de SQLite que trae la db
+import { fetchSession } from '../utils/db/index.js'
+
 const MainNavigation = () => {
+
+    // Instancio el despachante de funciones de seteo de estados generales de la app
+    const dispatch = useDispatch()
+
+    // Traigo de la db el usuario en caso de existir
+    useEffect(() => {
+        ( async () => {
+            const session = await fetchSession()
+            if(session.rows.length){
+                const user = session.rows._array[0]
+                dispatch(setUser(user))
+            }
+        })()
+    }, [])
 
     /* -------------------   ADMINISTRACIÓN DE DIMENSIONES DE PANTALLA   ----------------------------------------------------- */
     // Declaro variables para trabajar con la posición horizontal y vertical del móvil: 'true': vertical; 'false': horizontal

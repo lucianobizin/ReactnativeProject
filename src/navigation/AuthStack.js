@@ -76,9 +76,16 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
+        textAlign: "center",
+        textAlignVertical: "center",
+        paddingBottom: 10
     },
     HeaderHomeText: {
         fontFamily: fonts.joseginSansBold,
-        fontSize: 26
+        fontSize: 26,
+        alignContent: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        textAlignVertical: "center",
     },
 })

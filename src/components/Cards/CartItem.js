@@ -12,6 +12,8 @@ import { Entypo } from "@expo/vector-icons"
 
 // Importo el archivo de colores de estilo
 import colors from '../../utils/global/colors.js'
+
+// Importo el hook useEffect de react
 import { useEffect } from 'react'
 
 const CartItem = ({ item }) => {

@@ -1,5 +1,8 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+// Importo el hook useEffect de react
 import { useEffect } from 'react'
+
+// Importo componentes elementales de react native
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 
 // Importo la función de redux que permite despachar acciones para actualizar estados
 import { useDispatch, useSelector } from 'react-redux'

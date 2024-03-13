@@ -14,6 +14,9 @@ export const profileApi = createApi({
     // Configuro la URL base a la que se dirigirán las consultas (ej. Firebase Realtime Database)
     baseQuery: fetchBaseQuery({baseUrl: config.Frutizia.FRUTIZIA_BASE_URL}),
 
+    // Agregamos tagqueries para que cuando se registra un cambio en el tag se vuelva a lanzar un endpoint
+    tagTypes: ["userImage", "userLocation"],
+
     // Defino los endpoints para realizar consultas
     endpoints: (builder) => ({
         putImage: builder.mutation({
@@ -21,20 +24,24 @@ export const profileApi = createApi({
                 url: `/profile/${localId}.json`,
                 method: "PUT",
                 body: {image}
-            })
+            }),
+            invalidatesTags: ["userImage"]
         }),
         getImage: builder.query({
-            query: (localId) => `/profile/${localId}.json`
+            query: (localId) => `/profile/${localId}.json`,
+            providesTags: ["userImage"] // Se vuelve a ejecutar el método cada vez que se realiza un putImage
         }),
         putUserLocation: builder.mutation({
             query: ({localId, locationFormatted}) => ({
                 url: `/userLocation/${localId}.json`,
                 method: "PUT",
                 body: locationFormatted
-            })
+            }),
+            invalidatesTags: ["userLocation"]
         }),
         getUserLocation: builder.query({
-          query: (localId) => (`/userLocation/${localId}.json`)
+          query: (localId) => (`/userLocation/${localId}.json`),
+          providesTags: ["userLocation"]
         })
 
     })

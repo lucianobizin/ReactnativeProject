@@ -19,6 +19,9 @@ import fonts from '../utils/global/fonts.js'
 import InputForm from '../components/Forms/InputForm.js'
 import SubmitButton from '../components/Buttons/SubmitButton.js'
 
+// Importo las funciones de SQLite que borra e inserta los datos del usuario en la db respectivamente
+import { deleteSession, insertSession } from '../utils/db/index.js'
+
 
 const Register = ({ navigation }) => {
 
@@ -121,6 +124,12 @@ const Register = ({ navigation }) => {
             // Recibe data como respuesta, la cual posee el token de autenticación que se debe actualizar en el estado de authSlice
             // phone, idNumber, address, province,
             const { data } = await triggerRegister({ name, surname, email, phone, idNumber, address, province, password, confirmedPassword })
+
+            // Borro cualquier registro de sesión de usuario de la db de SQLite en caso de existir
+            await deleteSession()
+
+            // Inserto los datos del usuario registrado en SQLite
+            await insertSession(data)
 
             // La respuesta recibida de parte del servidor es data y actualizaremos con data.email y data.idToken el estado de authSlice
             // En caso de que la respuesta posea un idToken, MainNavigation redirija al usuario a TabNavigator (ver -> MainNavigator.js -> const user)

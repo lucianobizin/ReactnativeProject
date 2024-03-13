@@ -19,11 +19,14 @@ import fonts from '../utils/global/fonts.js'
 import InputForm from '../components/Forms/InputForm.js'
 import SubmitButton from '../components/Buttons/SubmitButton.js'
 
+// Importo el archivo con las variables de entorno
 import config from '../app/config/config.js'
+
+// Importo las funciones de SQLite que borra, trae e inserta los datos del usuario en la db respectivamente
+import { deleteSession, fetchSession, insertSession } from '../utils/db/index.js'
 
 const Login = ({ navigation }) => {
 
-  console.log(config)
   /* -------------------   DECLARACIÓN DE VARIABLES DE LA SCREEN  ------------------------------------------------------------------ */
 
   // Instancio dispatch para despachar reducers
@@ -37,6 +40,7 @@ const Login = ({ navigation }) => {
   // Guardo los datos que ingresa el usuario que se quiere loguear (email, password)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loginError, setLoginError] = useState("")
   const [newErrors, setNewErrors] = useState({
     email: "",
     password: ""
@@ -68,13 +72,33 @@ const Login = ({ navigation }) => {
   const onSubmit = async () => {
     try {
 
-      validateFields()
+      // validateFields()
 
       // Ejecuta la función que envía los datos del usuario que se quiere loguear a la base de datos
       // Recibe data como respuesta, la cual posee el token de autenticación
+      const { data, error } = await triggerLogin({ email, password })
 
-      const { data } = await triggerLogin({ email, password })
-      if (data) dispatch(setUser({ email: data.email, idToken: data.idToken, localId: data.localId }))
+      // Función que borra los estados de sesión en la db de SQLite
+      if(data) {
+
+        // Hago un fetch a la sessión del usuario para ver si existe
+        const session = await fetchSession()
+
+        console.log(session)
+
+        // Borro la sesión de usuario en caso de que la sesión del usuario no esté vacía en SQLite
+        if(session.rows._array[0]) { 
+        await deleteSession()
+        }
+
+        // Función que inserta una nueva sesión en la db de SQLite
+        await insertSession(data)
+
+      // En caso de que exista la data se despacha el setter de los datos del usuario
+        dispatch(setUser({ email: data.email, idToken: data.idToken, localId: data.localId }))
+    
+      }
+
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
     }
@@ -122,7 +146,7 @@ const Login = ({ navigation }) => {
           value={email}
           onChangeText={onChangeTextFunction}
           isSecure={false}
-          error=""
+          error={newErrors.email}
         />
 
         <InputForm
@@ -130,12 +154,14 @@ const Login = ({ navigation }) => {
           value={password}
           onChangeText={(t) => setPassword(t)}
           isSecure={true}
-          error=""
+          error={newErrors.password}
         />
 
         <View style={styles.submitButton}>
           <SubmitButton onPress={onSubmit} title="Iniciar Sesion" />
         </View>
+
+        {loginError && <Text style={styles.error}>El nombre de usuario o contraseña son inválidos</Text>}
 
         <Text style={styles.sub}>¿No tienes una cuenta?</Text>
 
@@ -198,5 +224,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.JosefinSansBold,
     color: colors.tertiary
+  },
+  error: {
+    fontSize:14,
+    color:"red",
+    fontFamily:fonts.JosefinSansBold,
+    fontStyle:"italic",
+    textAlign: "center"
   }
 })
