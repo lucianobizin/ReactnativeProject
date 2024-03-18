@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     email: "",
     idToken: "",
-    localId: ""
+    localId: "",
 }
 
 // La porción del store de la app en la que voy a almacenar el estado de mi usuario se llama "auth"
@@ -16,7 +16,6 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, actions) => {
-            console.log(actions.payload)
             state.email = actions.payload.email
             state.idToken = actions.payload.idToken
             state.localId = actions.payload.localId},

@@ -9,8 +9,14 @@ import Search from '../components/Search/Search.js'
 // Importo las categorías y productos desde Firebase (categories_market.json y products_market.json)
 import { useGetCategoriesQuery, useGetProductByCategoryQuery } from '../app/services/shop.js'
 
-// Importo los colores de estilo
-import colors from '../utils/global/colors.js'
+// Importo el spinner de carga de la app
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.js'
+
+// Importo la pantalla de error
+import Error from '../components/Errors/Error.js'
+
+// Importo el componente que se renderiza si el componente principal está vacío
+import EmptyComponent from '../components/EmptyComponent/EmptyComponent.js'
 
 // El componente ProductsByCategory recibe categorySelected, setCategorySelected (handler que modifica el estado de categorySelected) y selectProductId
 const ProductsByCategory = ({ navigation, route }) => {
@@ -26,15 +32,14 @@ const ProductsByCategory = ({ navigation, route }) => {
   // Guardo la palabra del buscador de productos
   const [keyword, setKeyword] = useState("")
 
-
   /* -------------------   SOLICITUD DE LA LISTA DE CATEGORÍAS Y PRODUCTOS A LA BBDD -------------------------------------------------------- */
   // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
-  const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery()
+  const { data: categories, isLoading: isLoadingCat, isError: isErrorCat, isSuccess: isSuccessCat } = useGetCategoriesQuery()
 
   // Obtengo las productos de cada categoría y los guardo en una constante products (sobreescribí el nombre data) utilizando useGetProductsByCategoryQuery (ver -> shop.js) 
-  const { data: products, isLoading: isLoadingProducts } = useGetProductByCategoryQuery()
+  const { data: products, isLoading: isLoadingProd, isError: isErrorProd, isSuccess: isSuccessProd } = useGetProductByCategoryQuery()
 
-  /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
+    /* -------------------   DECLARACIÓN DE USEEFECT PARA LAS SCREENS  ------------------------------------------------------------------------ */
 
   // Declaración de useEffect para definir el valor de CategoryProductsID y mapear los productos que tengan como nombre de categoría el valor CategoryProductsID (elegida en Home)
   // Tambiéen funciona para el Search revisando que la keyword coincida con algún producto de la lista de productos de la categoría elegida
@@ -42,7 +47,7 @@ const ProductsByCategory = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    if (!isLoadingCategories && !isLoadingProducts && categorySelected) {
+    if (!isLoadingCat && !isLoadingProd && categorySelected) {
 
       // Traigo la categoria cuyo nombre sea categorySelected (fuente: base de datos: categories_market.json )
       const selectedCategory = Object.values(categories).find(category => String(category.name) === String(categorySelected))
@@ -57,7 +62,7 @@ const ProductsByCategory = ({ navigation, route }) => {
 
     }
 
-    if (keyword && !isLoadingCategories && !isLoadingProducts && categorySelected) {
+    if (keyword && !isLoadingCat && !isLoadingProd && categorySelected) {
 
       // Mapeo del array de ids de productos que forman parte de la categoría seleccionada y devuelvo el producto (clave=product=id del producto, valor=catProductID=producto)
       handleSetProductsCategory(productsCategory.filter(product => {
@@ -74,6 +79,17 @@ const ProductsByCategory = ({ navigation, route }) => {
     }
 
   }, [categorySelected, keyword, categories, products])
+
+  /* -------------------   VALIDACIONES LOǴICAS DE RESPUESTA   ------------------------------------------------------------- */
+
+  // En caso de que se estén cargando el producto buscado
+  if (isLoadingCat || isLoadingProd) return (<LoadingSpinner />)
+
+  // En caso de que se produzca una error
+  if (isErrorCat || isErrorProd) return <Error message={"Se ha producido un error"} onRetry={() => navigation.goBack()} textButton={"Volver"} />
+
+  // En caso de que la petición haya sido exitosa pero no existan categorías
+  if ((isSuccessCat && categories.length === 0) || (isSuccessProd && products.length === 0)) return <EmptyComponent message={"No existen categorías"} />
 
 
   /* -------------------   DECLARACIÓN DE FUNCIONES HANDLER (PARA RESTRINGIR ACCESO AL FUNCIONES SET)  -------------------------------------- */
@@ -133,9 +149,6 @@ export default ProductsByCategory
 
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    backgroundColor: colors.primary
-  },
   search: {
     top: "20%",
     position: "relative",
@@ -153,6 +166,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: "20%",
-    marginBottom: 2,
+    marginBottom: "20%",
   }
 })

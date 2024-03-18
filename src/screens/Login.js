@@ -25,6 +25,9 @@ import config from '../app/config/config.js'
 // Importo las funciones de SQLite que borra, trae e inserta los datos del usuario en la db respectivamente
 import { deleteSession, fetchSession, insertSession } from '../utils/db/index.js'
 
+// Importo el componente de renderización de modales
+import ModalMessage from '../components/Modals/ModalMessage.js'
+
 const Login = ({ navigation }) => {
 
   /* -------------------   DECLARACIÓN DE VARIABLES DE LA SCREEN  ------------------------------------------------------------------ */
@@ -40,11 +43,12 @@ const Login = ({ navigation }) => {
   // Guardo los datos que ingresa el usuario que se quiere loguear (email, password)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loginError, setLoginError] = useState("")
   const [newErrors, setNewErrors] = useState({
     email: "",
     password: ""
   })
+
+  const [modalVisible, setModalVisible] = useState(false)
 
   /* -------------------   DECLARACIÓN DE FUNCIÓN DE VALIDACIÓN  ------------------------------------------------------------------- */
   const validateFields = () => {
@@ -78,25 +82,27 @@ const Login = ({ navigation }) => {
       // Recibe data como respuesta, la cual posee el token de autenticación
       const { data, error } = await triggerLogin({ email, password })
 
+      if (error) {
+        setModalVisible(true)
+      }
+
       // Función que borra los estados de sesión en la db de SQLite
-      if(data) {
+      if (data) {
 
         // Hago un fetch a la sessión del usuario para ver si existe
         const session = await fetchSession()
 
-        console.log(session)
-
         // Borro la sesión de usuario en caso de que la sesión del usuario no esté vacía en SQLite
-        if(session.rows._array[0]) { 
-        await deleteSession()
+        if (session.rows._array[0]) {
+          await deleteSession()
         }
 
         // Función que inserta una nueva sesión en la db de SQLite
         await insertSession(data)
 
-      // En caso de que exista la data se despacha el setter de los datos del usuario
+        // En caso de que exista la data se despacha el setter de los datos del usuario
         dispatch(setUser({ email: data.email, idToken: data.idToken, localId: data.localId }))
-    
+
       }
 
     } catch (error) {
@@ -109,13 +115,11 @@ const Login = ({ navigation }) => {
     setEmail(t)
   }
 
-  useEffect(() => {
-    console.log(email)
-  }, [email])
-
-  useEffect(() => {
-    console.log(password)
-  }, [password])
+  // Defino handler del modal
+  const handlerCloseModal = () => {
+    setModalVisible(false)
+  }
+  
 
   /* -------------------   RENDERIZACIÓN DE LOGIN  ---------------------------------------------------------------------------------- */
 
@@ -134,44 +138,51 @@ const Login = ({ navigation }) => {
   */
 
   return (
+    <>
+      <View style={styles.main}>
 
-    <View style={styles.main}>
+        <View style={styles.container}>
 
-      <View style={styles.container}>
+          <Text style={styles.titleContainer}>Introduce tus datos</Text>
 
-        <Text style={styles.titleContainer}>Introduce tus datos</Text>
+          <InputForm
+            label="Email"
+            value={email}
+            onChangeText={onChangeTextFunction}
+            isSecure={false}
+            error={newErrors.email}
+          />
 
-        <InputForm
-          label="Email"
-          value={email}
-          onChangeText={onChangeTextFunction}
-          isSecure={false}
-          error={newErrors.email}
-        />
+          <InputForm
+            label="Password"
+            value={password}
+            onChangeText={(t) => setPassword(t)}
+            isSecure={true}
+            error={newErrors.password}
+          />
 
-        <InputForm
-          label="Password"
-          value={password}
-          onChangeText={(t) => setPassword(t)}
-          isSecure={true}
-          error={newErrors.password}
-        />
+          <View style={styles.submitButton}>
+            <SubmitButton onPress={onSubmit} title="Iniciar Sesion" />
+          </View>
 
-        <View style={styles.submitButton}>
-          <SubmitButton onPress={onSubmit} title="Iniciar Sesion" />
+          <Text style={styles.sub}>¿No tienes una cuenta?</Text>
+
+          <Pressable onPress={() => navigation.navigate("Register")} >
+            <Text style={styles.subLink}>Registrarte en Frutizia</Text>
+          </Pressable>
+
         </View>
 
-        {loginError && <Text style={styles.error}>El nombre de usuario o contraseña son inválidos</Text>}
+      </View >
 
-        <Text style={styles.sub}>¿No tienes una cuenta?</Text>
+      <ModalMessage 
+        textButton={"Volver a intentar"}
+        text={"Email o contraseña inválido"}
+        modalVisible={modalVisible}
+        onClose={handlerCloseModal}
+      />
 
-        <Pressable onPress={() => navigation.navigate("Register")} >
-          <Text style={styles.subLink}>Registrarte en Frutizia</Text>
-        </Pressable>
-
-      </View>
-
-    </View >
+    </>
   )
 }
 
@@ -226,10 +237,10 @@ const styles = StyleSheet.create({
     color: colors.tertiary
   },
   error: {
-    fontSize:14,
-    color:"red",
-    fontFamily:fonts.JosefinSansBold,
-    fontStyle:"italic",
+    fontSize: 14,
+    color: "red",
+    fontFamily: fonts.JosefinSansBold,
+    fontStyle: "italic",
     textAlign: "center"
   }
 })

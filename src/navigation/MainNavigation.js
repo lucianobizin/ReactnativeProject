@@ -11,7 +11,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Importo setUser que me permite setear el estado del usuario
-import { setUser } from '../features/auth/authSlice.js'
+import { clearUser, setUser } from '../features/auth/authSlice.js'
 
 // Importo el comoponente de navegación TabNavigator (ShopStack, CartStack, OrdersStack) y de autenticación AuthStack (ver -> Register & Login)
 import TabNavigator from './TabNavigator.js'
@@ -27,13 +27,29 @@ const MainNavigation = () => {
 
     // Traigo de la db el usuario en caso de existir
     useEffect(() => {
-        ( async () => {
+
+        (async () => {
+
             const session = await fetchSession()
-            if(session.rows.length){
-                const user = session.rows._array[0]
-                dispatch(setUser(user))
+
+            if (session.rows.length) {
+
+                // Valido que el usuario no haya tenido la sesión abierta más de 1 hora sino la cierro y debe volverse a loguear
+                const now = Math.floor(Date.now() / 1000)
+                const updateAt = session.rows._array[0].updateAt
+                const sessionTime = now - updateAt
+
+                if (sessionTime < 3600) {
+                    const user = session.rows._array[0]
+                    dispatch(setUser(user))
+                } else {
+                    dispatch(clearUser())
+                }
+
             }
+
         })()
+
     }, [])
 
     /* -------------------   ADMINISTRACIÓN DE DIMENSIONES DE PANTALLA   ----------------------------------------------------- */
@@ -80,14 +96,10 @@ const MainNavigation = () => {
     // De todos los estados globales de la app (ver -> store) user almacenará el estado de la porción auth
     const user = useSelector((state) => state.auth)
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
-
     return (
         <SafeAreaView style={{ flex: 1, zIndex: 6 }}>
             <NavigationContainer>
-                {user.idToken ? <TabNavigator portrait={portrait}/> : <AuthStack/>}
+                {user.idToken ? <TabNavigator portrait={portrait} /> : <AuthStack />}
             </NavigationContainer>
         </SafeAreaView>
     )

@@ -102,11 +102,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondary,
         shadowColor: "black",
         elevation: 4,
-        position: "absolute",
-        bottom: 10,
-        left: 10,
-        right: 10,
-        borderRadius: 15,
         height: 90,
         shadowColor: "#000",
         shadowOffset: {

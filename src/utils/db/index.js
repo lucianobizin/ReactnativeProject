@@ -2,7 +2,7 @@
 import * as SQLite from "expo-sqlite"
 
 // Creo la base de datos (ej. name: "session.db")
-const db = SQLite.openDatabase("session.db")
+const db = SQLite.openDatabase("sessionApp.db")
 
 // Función que inicializará la base de datos cuando se lo requiera
 export const init = () => {
@@ -13,7 +13,7 @@ export const init = () => {
         db.transaction(tx => {
             // Parámetros --> "consulta", [valores que paso a la consulta], función de consulta exitosa, función de consulta rechazada
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS sessionUser (localId TEXT NOT NULL, email TEXT NOT NULL, idToken TEXT NOT NULL)",
+                "CREATE TABLE IF NOT EXISTS sessionUser (localId TEXT NOT NULL, email TEXT NOT NULL, idToken TEXT NOT NULL, updateAt INTEGER)",
                 [],
                 (_, result) => {resolve(result)},
                 (_, result) => {reject(result)}
@@ -35,7 +35,7 @@ export const insertSession = ({localId, email, idToken}) => {
             // Parámetros --> "consulta", [valores que paso a la consulta], función de consulta exitosa, función de consulta rechazada
             // Los ?,?,? --> hacen referencia a localId, email, idToken
             tx.executeSql(
-                "INSERT INTO sessionUser (localId, email, idToken) VALUES (?,?,?)",
+                "INSERT INTO sessionUser (localId, email, idToken, updateAt) VALUES (?,?,?, strftime('%s', 'now'))",
                 [localId, email, idToken],
                 (_, result) => {resolve(result)},
                 (_, result) => {reject(result)}

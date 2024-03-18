@@ -1,5 +1,5 @@
 // Importo componentes de react & react-native
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 
 // Importo el componente del contador
 import Counter from '../components/Counter/Counter.js'
@@ -10,15 +10,24 @@ import { useGetProductByIdQuery } from '../app/services/shop.js'
 // Importo objetos globales de estilo de la app --> fuentes y colores
 import colors from '../utils/global/colors.js'
 
+// Importo el spinner de carga de la app
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.js'
+
+// Importo la pantalla de error de la app
+import Error from '../components/Errors/Error.js'
+
+// Importo el componente que se renderiza si el componente principal está vacío
+import EmptyComponent from '../components/EmptyComponent/EmptyComponent.js'
+
 // El componente ProductDetail recibe productId (para mostrar el producto elegido en ProductsByCateogory), portrait (handle windows) y setCategorySelected (goBack)
-const ProductDetail = ({ route }) => {
+const ProductDetail = ({ navigation, route }) => {
 
   /* -------------------   OBTENCIÓN DE VARIABLE POR PARÁMETRO  ---------------------------------------------------------- */
   const { productId, portrait } = route.params
 
   /* -------------------   SOLICITUD DE LA LISTA DE PRODUCTOS A LA BBDD -------------------------------------------------- */
   // Obtengo el producto buscado (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
-  const {data: product, isLoading} = useGetProductByIdQuery(productId)
+  const { data: product, isLoading, isError, isSuccess } = useGetProductByIdQuery(productId)
 
   /* -------------------   RENDERIZACIÓN DE PRODUCTSDETAIL -------------------------------------------------------------------------------- */
 
@@ -40,17 +49,16 @@ const ProductDetail = ({ route }) => {
   */
 
   // En caso de que se estén cargando el producto buscado
-  if (isLoading) {
+  /* -------------------   VALIDACIONES LOǴICAS DE RESPUESTA   ------------------------------------------------------------- */
 
-    return (
+  // En caso de que se estén cargando el producto buscado
+  if (isLoading) return (<LoadingSpinner />)
 
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+  // En caso de que se produzca una error
+  if (isError) return <Error message={"Se ha producido un error"} onRetry={() => navigation.goBack()} textButton={"Volver"} />
 
-    )
-
-  }
+  // En caso de que la petición haya sido exitosa pero no existan categorías
+  if ((isSuccess) && product === null) return <EmptyComponent message={"No existen categorías"}/>
 
   return (
 
@@ -86,10 +94,6 @@ const ProductDetail = ({ route }) => {
 export default ProductDetail
 
 const styles = StyleSheet.create({
-
- loadingContainer: {
-  backgroundColor: colors.primary
-  },
   container: {
     backgroundColor: colors.white,
     top: "10%",
@@ -111,8 +115,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   image: {
-    width: "65%",
-    height: 275,
+    width: "70%",
+    height: "45%",
     objectFit: "contain"
   },
   containerText: {
@@ -120,8 +124,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     gap: 25,
-    paddingHorizontal: 5,
-    paddingVertical: 15,
+    paddingHorizontal: "5%",
+    paddingVertical: "5%",
     // Sombras para Android
     elevation: 8,
     // Sombras para iOS
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",
-    marginVertical: 35,
+    marginVertical: "10%",
     gap: 15
   },
   title: {
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
   priceText: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: "2.5%"
   },
   counter: {
     flexDirection: "row",

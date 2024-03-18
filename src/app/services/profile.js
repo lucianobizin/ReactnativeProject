@@ -31,6 +31,13 @@ export const profileApi = createApi({
             query: (localId) => `/profile/${localId}.json`,
             providesTags: ["userImage"] // Se vuelve a ejecutar el método cada vez que se realiza un putImage
         }),
+        registerUserProfile: builder.mutation({
+            query: ({userData, localId}) => ({
+                url: `/profile/${localId}/userData.json`,
+                method: "POST",
+                body: userData
+            })
+        }),
         putUserLocation: builder.mutation({
             query: ({localId, locationFormatted}) => ({
                 url: `/userLocation/${localId}.json`,
@@ -49,4 +56,4 @@ export const profileApi = createApi({
 })
 
 // Exporto las funciones (--query por ser gets y --mutation por ser post/put) que ejecutan los endpoints que pertenencen al objeto profileApi
-export const {usePutImageMutation, usePutUserLocationMutation, useGetImageQuery, useGetUserLocationQuery} = profileApi   
+export const {usePutImageMutation, usePutUserLocationMutation, useRegisterUserProfileMutation, useGetImageQuery, useGetUserLocationQuery} = profileApi   

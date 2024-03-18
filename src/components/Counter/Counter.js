@@ -1,5 +1,5 @@
-// Importo el hook useEffect de react
-import { useEffect } from 'react'
+// Importo el hook useEffect y useState de react
+import { useEffect, useState } from 'react'
 
 // Importo componentes elementales de react native
 import { StyleSheet, Text, View, Pressable } from 'react-native'
@@ -12,6 +12,9 @@ import { addCartItem } from '../../features/cart/cartSlice.js'
 
 // Importo las acciones que se despacharán para actualizar el contador de productos (navigation -> CartStack.js)
 import { increment, decrement, updatingCount } from '../../features/counter/counterSlice.js'
+
+// Importo el componente de modal
+import DoubleModal from "../Modals/DoubleModal.js"
 
 // Importo objetos globales de estilo de la app --> fuentes y colores
 import colors from '../../utils/global/colors.js'
@@ -34,7 +37,21 @@ const Counter = ({ product, productId }) => {
         dispatch(updatingCount(cartProduct ? cartProduct.quantity : 0))
     }, [cart.items])
 
+    // Declaro un estado utilizando useState
+    const [doubleModalVisible, setDoubleModalVisible] = useState(false)
 
+    const handleAddToCart = () => {
+        setDoubleModalVisible(true)
+    }
+
+    const handleAccept = () => {
+        dispatch(addCartItem({ product: product, count: count }))
+        setDoubleModalVisible(false)
+    }
+
+    const handleCancel = () => {
+        setDoubleModalVisible(false)
+    }
 
     return (
 
@@ -49,14 +66,19 @@ const Counter = ({ product, productId }) => {
                 <Text style={styles.symbol}>+</Text>
             </Pressable>
 
-            <Pressable style={styles.buyNow} onPress={() => {
-                dispatch(addCartItem({ product: product, count: count }))
-            }}
-            >
+            <Pressable style={styles.buyNow} onPress={handleAddToCart}>
                 <Text style={styles.buyNowText}>Agregar</Text>
             </Pressable>
+            <DoubleModal
+                text={"¿Quieres agregar el producto al carro?"}
+                textButtonAccept={"Agregar"}
+                textButtonCancel={"Cancelar"}
+                modalVisible={doubleModalVisible}
+                onCloseAccept={handleAccept}
+                onCloseCancel={handleCancel}
+            />
 
-        </View>
+        </View >
 
     )
 }
@@ -108,11 +130,11 @@ const styles = StyleSheet.create({
     },
     buyNow: {
         width: 75,
-        height: 35,
+        height: 40,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.tertiary,
-        paddingVertical: 5,
+        paddingVertical: 3,
         paddingHorizontal: 10,
         borderRadius: 5,
         marginTop: 5,

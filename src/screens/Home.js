@@ -9,6 +9,7 @@ import colors from '../utils/global/colors.js'
 
 // El componente Home recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
 const Home = ({ navigation }) => {
+  
 
   /* -------------------   RENDERIZACIÓN DE HOME --------------------------------------------------------------------------- */
 

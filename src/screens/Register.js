@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 
 // Importo la función del endpoint Register que envía los datos del formulario hacia la base de datos (ver -> auth.js)
 import { useRegisterMutation } from '../app/services/auth.js'
+import { useRegisterUserProfileMutation } from "../app/services/profile.js"
 
 // Importo el reducer que modificará el estado de la porción authSlice del store
 import { setUser } from '../features/auth/authSlice.js'
@@ -21,6 +22,11 @@ import SubmitButton from '../components/Buttons/SubmitButton.js'
 
 // Importo las funciones de SQLite que borra e inserta los datos del usuario en la db respectivamente
 import { deleteSession, insertSession } from '../utils/db/index.js'
+
+// Importo el componente de Modal
+import ModalMessage from '../components/Modals/ModalMessage.js'
+
+
 
 
 const Register = ({ navigation }) => {
@@ -38,7 +44,10 @@ const Register = ({ navigation }) => {
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
     const [triggerRegister] = useRegisterMutation()
+    const [triggerRegisterUserProfile] = useRegisterUserProfileMutation()
     const [error, setError] = useState("")
+    const [modalVisible, setModalVisible] = useState(false)
+    const [textMessage, setTextMessage] = useState("")
 
     // Defino el estado de nuevos errores antes de enviar los datos del formulario
     const [newErrors, setNewErrors] = useState({
@@ -86,7 +95,7 @@ const Register = ({ navigation }) => {
         }
 
         // Validaciones para el campo de número de identificación
-        if (!/^\d+$/.test(idNumber.replace(/./g, ''))) {
+        if (!/^\d+$/.test(idNumber.replace(/\D/g, ''))) {
             newErrors.idNumber = "El número de identificación debe contener solo números";
         }
 
@@ -99,12 +108,13 @@ const Register = ({ navigation }) => {
             newErrors.province = "La provincia no debe contener caracteres especiales ni estar vacía";
         }
         // Validaciones para la contraseña
-        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{6,}/.test(password)) {
+        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()+]).{6,}/.test(password)) {
+            console.log(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*+()]).{6,}/.test(password))
             newErrors.password = "La contraseña debe contener al menos una mayúscula, una minúscula, un caracter especial y un número, y tener al menos 6 caracteres";
         }
         // Validación de que confirmedPassword sea igual a password
         if (password !== confirmedPassword) {
-            newErrors.password = "Las contraseñas no coinciden";
+            newErrors.confirmedPassword = "Las contraseñas no coinciden";
         }
 
         // Retorno el diccionario con los errores
@@ -118,12 +128,19 @@ const Register = ({ navigation }) => {
 
         try {
 
-            validateFields()
+            await validateFields()
 
             // Ejecuta la función que envía los datos del usuario que se quiere registrar a la base de datos
             // Recibe data como respuesta, la cual posee el token de autenticación que se debe actualizar en el estado de authSlice
             // phone, idNumber, address, province,
-            const { data } = await triggerRegister({ name, surname, email, phone, idNumber, address, province, password, confirmedPassword })
+
+            const { data, error } = await triggerRegister({ name, surname, email, phone, idNumber, address, province, password, confirmedPassword })
+
+            if (error) {
+                console.log(error.data.error.message)
+                setTextMessage(error?.data?.error?.message)
+                setModalVisible(true)
+            }
 
             // Borro cualquier registro de sesión de usuario de la db de SQLite en caso de existir
             await deleteSession()
@@ -131,17 +148,31 @@ const Register = ({ navigation }) => {
             // Inserto los datos del usuario registrado en SQLite
             await insertSession(data)
 
+            // Guardo el resto de los datos del usuario en la base de datos de firebase
+            const { data: RegisterUserData, error: errorRegisterUserData } = await triggerRegisterUserProfile({ userData: { name, surname, email, phone, address, province }, localId: data.localId })
+
+            if (errorRegisterUserData) {
+                setModalVisible(true)
+            }
+
             // La respuesta recibida de parte del servidor es data y actualizaremos con data.email y data.idToken el estado de authSlice
             // En caso de que la respuesta posea un idToken, MainNavigation redirija al usuario a TabNavigator (ver -> MainNavigator.js -> const user)
-            dispatch(setUser({
-                email: data.email,
-                idToken: data.idToken,
-                localId: data.localId
-            }))
+            if (RegisterUserData) {
+                dispatch(setUser({
+                    email: data.email,
+                    idToken: data.idToken,
+                    localId: data.localId
+                }))
+            }
         } catch (error) {
             setError("Error al registrar. Por favor, intenta de nuevo.") // Actualiza el estado de error
         }
 
+    }
+
+    // Defino handler del modal
+    const handlerCloseModal = () => {
+        setModalVisible(false)
     }
 
     /* -------------------   RENDERIZACIÓN DE REGISTER  ---------------------------------------------------------------------------------------- */
@@ -163,103 +194,112 @@ const Register = ({ navigation }) => {
 
     return (
 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <>
 
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
-                <Text style={styles.titleContainer}>Introduce tus datos</Text>
+                <View style={styles.container}>
 
-                <InputForm
-                    label="Nombre"
-                    value={name}
-                    onChangeText={(t) => setName(t)}
-                    isSecure={false}
-                    error={newErrors.name}
-                />
+                    <Text style={styles.titleContainer}>Introduce tus datos</Text>
 
-                <InputForm
-                    label="Apellido"
-                    value={surname}
-                    onChangeText={(t) => setSurname(t)}
-                    isSecure={false}
-                    error={newErrors.surname}
-                />
+                    <InputForm
+                        label="Nombre"
+                        value={name}
+                        onChangeText={(t) => setName(t)}
+                        isSecure={false}
+                        error={newErrors.name}
+                    />
 
-                <InputForm
-                    label="Email"
-                    value={email}
-                    onChangeText={(t) => setEmail(t)}
-                    isSecure={false}
-                    error={newErrors.email}
-                />
+                    <InputForm
+                        label="Apellido"
+                        value={surname}
+                        onChangeText={(t) => setSurname(t)}
+                        isSecure={false}
+                        error={newErrors.surname}
+                    />
 
-                <InputForm
-                    label="Móvil"
-                    value={phone}
-                    onChangeText={(t) => setPhone(t)}
-                    isSecure={false}
-                    error={newErrors.phone}
-                />
+                    <InputForm
+                        label="Email"
+                        value={email}
+                        onChangeText={(t) => setEmail(t)}
+                        isSecure={false}
+                        error={newErrors.email}
+                    />
 
-                <InputForm
-                    label="DNI / Pasaporte"
-                    value={idNumber}
-                    onChangeText={(t) => setIdNumber(t)}
-                    isSecure={false}
-                    error={newErrors.idNumber}
-                />
+                    <InputForm
+                        label="Móvil"
+                        value={phone}
+                        onChangeText={(t) => setPhone(t)}
+                        isSecure={false}
+                        error={newErrors.phone}
+                    />
 
-                <InputForm
-                    label="Dirección"
-                    value={address}
-                    onChangeText={(t) => setAddress(t)}
-                    isSecure={false}
-                    error={newErrors.address}
-                />
+                    <InputForm
+                        label="DNI / Pasaporte"
+                        value={idNumber}
+                        onChangeText={(t) => setIdNumber(t)}
+                        isSecure={false}
+                        error={newErrors.idNumber}
+                    />
 
-                <InputForm
-                    label="Provincia"
-                    value={province}
-                    onChangeText={(t) => setProvince(t)}
-                    isSecure={false}
-                    error={newErrors.province}
-                />
+                    <InputForm
+                        label="Dirección"
+                        value={address}
+                        onChangeText={(t) => setAddress(t)}
+                        isSecure={false}
+                        error={newErrors.address}
+                    />
 
-                <InputForm
-                    label="Contraseña"
-                    value={password}
-                    onChangeText={(t) => setPassword(t)}
-                    isSecure={true}
-                    error={newErrors.password}
-                />
+                    <InputForm
+                        label="Provincia"
+                        value={province}
+                        onChangeText={(t) => setProvince(t)}
+                        isSecure={false}
+                        error={newErrors.province}
+                    />
 
-                <InputForm
-                    label="Confirmación de contraseña"
-                    value={confirmedPassword}
-                    onChangeText={(t) => setConfirmedPassword(t)}
-                    isSecure={true}
-                    error={newErrors.confirmedPassword}
-                />
+                    <InputForm
+                        label="Contraseña"
+                        value={password}
+                        onChangeText={(t) => setPassword(t)}
+                        isSecure={true}
+                        error={newErrors.password}
+                    />
 
-                <View style={styles.submitButton}>
-                    <SubmitButton onPress={onSubmit} title="Registrarme" />
+                    <InputForm
+                        label="Confirmación de contraseña"
+                        value={confirmedPassword}
+                        onChangeText={(t) => setConfirmedPassword(t)}
+                        isSecure={true}
+                        error={newErrors.confirmedPassword}
+                    />
+
+                    <View style={styles.submitButton}>
+                        <SubmitButton onPress={onSubmit} title="Registrarme" />
+                    </View>
+
+                    <Text style={styles.sub}>¿Ya tienes una cuenta en Frutizia?</Text>
+
+                    <Pressable onPress={() => navigation.navigate("Login")} >
+                        <Text style={styles.subLink}>Iniciar sesion</Text>
+                    </Pressable>
+
                 </View>
 
-                {error && <Text style={styles.errorText}>{error}</Text>}
+                <View style={styles.footerContainer}>
+                    <Text style={styles.footerText}>¡Gracias por visitarnos!</Text>
+                </View>
 
-                <Text style={styles.sub}>¿Ya tienes una cuenta en Frutizia?</Text>
+            </ScrollView>
 
-                <Pressable onPress={() => navigation.navigate("Login")} >
-                    <Text style={styles.subLink}>Iniciar sesion</Text>
-                </Pressable>
+            <ModalMessage
+                textButton={"Volver a intentarlo"}
+                text={textMessage}
+                modalVisible={modalVisible}
+                onClose={handlerCloseModal}
+            />
 
-            </View>
-
-            <View style={styles.footerContainer}>
-                <Text style={styles.footerText}>¡Gracias por visitarnos!</Text>
-            </View>
-
-        </ScrollView>
+        </>
 
     )
 
@@ -273,7 +313,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: "5%",
+        paddingVertical: "1%",
         gap: 100,
     },
     container: {
@@ -297,7 +337,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         position: "relative",
-        top: "3.5%"
+        top: "2.5%"
     },
     titleContainer: {
         fontSize: 18,
@@ -319,16 +359,20 @@ const styles = StyleSheet.create({
         color: colors.secondary
     },
     footerContainer: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: colors.primary, // Color de fondo deseado
         width: '100%',
-        paddingVertical: 20,
         alignItems: 'center',
+        marginBottom: "15%",
     },
     footerText: {
         color: colors.tertiary,
         fontSize: 16,
         fontFamily: fonts.josefinSansBold,
-        fontWeight: "bold"
+        fontWeight: "bold",
+
     },
     errorText: {
         fontSize: 14,

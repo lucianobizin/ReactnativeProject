@@ -22,7 +22,7 @@ export const authApi =  createApi({
                 method: "POST",
                 body: user
             })
-        }), 
+        }),
         login: builder.mutation({
             query: (user) => ({
                 url: `accounts:signInWithPassword?key=${config.Google.GOOGLE_API}`,
