@@ -99,11 +99,11 @@ export default TabNavigator
 const styles = StyleSheet.create({
 
     tabBar: {
-        backgroundColor: colors.secondary,
-        shadowColor: "black",
+        backgroundColor: colors.primary,
+        shadowColor: colors.white,
         elevation: 4,
         height: 90,
-        shadowColor: "#000",
+        shadowColor: "#fffff",
         shadowOffset: {
             width: 0,
             height: 2,

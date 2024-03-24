@@ -19,7 +19,7 @@ import DoubleModal from "../Modals/DoubleModal.js"
 // Importo objetos globales de estilo de la app --> fuentes y colores
 import colors from '../../utils/global/colors.js'
 
-const Counter = ({ product, productId }) => {
+const Counter = ({ product, productId, navigation }) => {
 
     /* -------------------   TRAIGO VARIABLE GLOBAL CART  ------------------------------------------------------------------ */
     // Traigo el estado del carrito utilizando useSelector (ver -> store.js y cartSlice.js)
@@ -44,9 +44,10 @@ const Counter = ({ product, productId }) => {
         setDoubleModalVisible(true)
     }
 
-    const handleAccept = () => {
+    const handleAccept = async () => {
         dispatch(addCartItem({ product: product, count: count }))
         setDoubleModalVisible(false)
+        navigation.goBack()
     }
 
     const handleCancel = () => {

@@ -19,10 +19,10 @@ export const profileApi = createApi({
 
     // Defino los endpoints para realizar consultas
     endpoints: (builder) => ({
-        putImage: builder.mutation({
+        patchImage: builder.mutation({
             query: ({image, localId }) => ({
                 url: `/profile/${localId}.json`,
-                method: "PUT",
+                method: "PATCH",
                 body: {image}
             }),
             invalidatesTags: ["userImage"]
@@ -38,10 +38,10 @@ export const profileApi = createApi({
                 body: userData
             })
         }),
-        putUserLocation: builder.mutation({
+        patchUserLocation: builder.mutation({
             query: ({localId, locationFormatted}) => ({
                 url: `/userLocation/${localId}.json`,
-                method: "PUT",
+                method: "PATCH",
                 body: locationFormatted
             }),
             invalidatesTags: ["userLocation"]
@@ -56,4 +56,4 @@ export const profileApi = createApi({
 })
 
 // Exporto las funciones (--query por ser gets y --mutation por ser post/put) que ejecutan los endpoints que pertenencen al objeto profileApi
-export const {usePutImageMutation, usePutUserLocationMutation, useRegisterUserProfileMutation, useGetImageQuery, useGetUserLocationQuery} = profileApi   
+export const {usePatchImageMutation, usePatchUserLocationMutation, useRegisterUserProfileMutation, useGetImageQuery, useGetUserLocationQuery} = profileApi   

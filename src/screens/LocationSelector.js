@@ -15,7 +15,7 @@ import * as Location from 'expo-location'
 import { useSelector } from 'react-redux'
 
 // Importo las funciones que desencadena el método PUT para actualizar la localización
-import { usePutUserLocationMutation } from '../app/services/profile.js'
+import { usePatchUserLocationMutation } from '../app/services/profile.js'
 
 // Importo las fuentes y los colores
 import fonts from '../utils/global/fonts.js'
@@ -44,7 +44,7 @@ const LocationSelector = ({ navigation }) => {
   const localId = useSelector((state) => state.auth.localId)
 
   // Declaro el trigger del PUT de localización
-  const [triggerUserLocation] = usePutUserLocationMutation()
+  const [triggerUserLocation] = usePatchUserLocationMutation()
 
   /* -------------------   DECLARACIÓN DE USEFFECT  ------------------------------------------------------------------ */
 

@@ -58,7 +58,7 @@ const ProductDetail = ({ navigation, route }) => {
   if (isError) return <Error message={"Se ha producido un error"} onRetry={() => navigation.goBack()} textButton={"Volver"} />
 
   // En caso de que la petición haya sido exitosa pero no existan categorías
-  if ((isSuccess) && product === null) return <EmptyComponent message={"No existen categorías"}/>
+  if ((isSuccess) && product === null) return <EmptyComponent message={"No existen categorías"} />
 
   return (
 
@@ -66,11 +66,13 @@ const ProductDetail = ({ navigation, route }) => {
 
       <View style={[styles.content, !portrait && { flexDirection: "row", gap: 20, padding: 10 }]} >
 
-        <Image
-          style={[styles.image, !portrait && { width: "40%", height: 100 }]}
-          source={{ uri: product.thumbnail ? product.thumbnail : null }}
-          resizeMode='cover'
-        />
+        <View style={styles.imageContainer}>
+          <Image
+            style={[styles.image, !portrait && { width: "40%", height: 100 }]}
+            source={{ uri: product.thumbnail ? product.thumbnail : null }}
+            resizeMode='cover'
+          />
+        </View>
 
         <View style={[styles.containerText, !portrait && { width: "30%" }]}>
           <Text style={styles.title}>{product.name}</Text>
@@ -80,7 +82,7 @@ const ProductDetail = ({ navigation, route }) => {
           <Text style={styles.priceText}>Precio de bulto: {product.bulk_price} € / {product.reference_format}</Text>
           <Text style={styles.priceText}>Precio de unidad aprox: {product.unit_price} €</Text>
           <View style={styles.counter}>
-            <Counter product={product} productId={productId} />
+            <Counter product={product} productId={productId} navigation={navigation}/>
           </View>
         </View>
 
@@ -114,9 +116,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  image: {
+  imageContainer: {
     width: "70%",
     height: "45%",
+    objectFit: "contain"
+  },
+  image: {
+    width: "100%",
+    height: "100%",
     objectFit: "contain"
   },
   containerText: {
@@ -133,7 +140,8 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 2
-    }
+    },
+    marginTop: 20
 
   },
   containerPrice: {

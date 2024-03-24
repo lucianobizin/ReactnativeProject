@@ -24,14 +24,6 @@ const Orders = () => {
     // Traigo las órdenes de un usuario
     const { data: orders, isLoading, isError, isSuccess } = useGetOrdersQuery(localId)
 
-    useEffect(() => {
-        console.log(orders)
-    }, [orders])
-
-
-    // // Creo el trigger de la petición de órdenes
-    // const [triggerGetOrders] = useGetOrdersQuery()
-
     // En caso de que se estén cargando el producto buscado
     if (isLoading) return (<LoadingSpinner />)
 
@@ -39,7 +31,7 @@ const Orders = () => {
     if (isError) return <Error message={"Se ha producido un error"} onRetry={() => navigation.goBack()} textButton={"Volver"} />
 
     // En caso de que la petición haya sido exitosa pero no existan categorías
-    if ((isSuccess) && orders === null) return <EmptyComponent message={"No existen categorías"} />
+    if (isSuccess && orders.length === 0) return <EmptyComponent message={"No existen categorías"} />
 
 
 
@@ -60,6 +52,7 @@ const Orders = () => {
     return (
 
         <View style={styles.cardContainer}>
+
             <FlatList
                 data={orders}
                 keyExtractor={(item) => item.id}
@@ -76,7 +69,8 @@ export default Orders
 
 const styles = StyleSheet.create({
     cardContainer: {
-        backgroundColor: colors.primary,
+        flex: 1,
+        backgroundColor: colors.white,
         justifyContent: "space-between"
     }
 })

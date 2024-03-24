@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         gap: 20,
         left: 20,
         // Sombras para Android
-        elevation: 8,
+        elevation: 10,
         // Sombras para iOS
         shadowColor: '#000',
         shadowOffset: {

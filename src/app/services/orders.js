@@ -30,6 +30,11 @@ export const ordersApi = createApi({
         getOrders: builder.query({
             query: (localId) => `/orders/${localId}.json`,
             transformResponse: (response) => {
+                // Controlo el caso de inexistencia de órdenes para un usuario (sino genera isError true)
+                if (response === null) {
+                    // Retorno un array vacío
+                    return [];
+                } 
                 // Transformo un objeto en un arreglo (es un arreglo de arreglo por lo que mapeo) 
                 const data = Object.entries(response).map( (item) => {
                     return {

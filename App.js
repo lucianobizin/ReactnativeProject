@@ -20,14 +20,8 @@ import MainNavigation from "./src/navigation/MainNavigation.js"
 // Importo la función que crea la base de datos SQLite
 import { init } from './src/utils/db/index.js'
 
-// Función que crea la base de datos de SQLite
-// init()
-
-// Si quiero ver la respuesta podría hacer...
-
 (async () => {
   const table = await init()
-  console.log(table)
 })()
 
 const App = () => {

@@ -40,16 +40,17 @@ const styles = StyleSheet.create({
         borderWidth:0,
         borderBottomWidth:3,
         borderBottomColor:colors.primary,
-        padding:2,
+        paddingVertical:2,
         fontFamily:fonts.JosefinSansBold,
         fontSize:14,
-        marginHorizontal:"2.5%",
+        marginHorizontal:"5%",
         marginVertical:"5%"
       },
       titleInput:{
         width:"90%",
         marginHorizontal:"5%",
         fontSize:16,
+        fontWeight: "bold",
         fontFamily:fonts.JosefinSansBold
       },
       error:{
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
         color:"red",
         fontFamily:fonts.JosefinSansBold,
         fontStyle:"italic",
-        marginLeft:20
+        marginHorizontal:"5%",
+        marginBottom: 10
       }
 })

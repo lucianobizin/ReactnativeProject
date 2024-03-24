@@ -23,7 +23,7 @@ import DoubleModal from '../components/Modals/DoubleModal.js'
 // Importo la función que desencadena el método POST
 import { usePostOrderMutation } from '../app/services/orders.js'
 
-const Cart = () => {
+const Cart = ({navigation}) => {
 
     // Genero el dispatch para traer la función global de borrar carrito
     const dispatch = useDispatch()
@@ -64,9 +64,10 @@ const Cart = () => {
         await dispatch(deleteCart())
     }
 
-    const handleAccept = () => {
-        handleAppOrders()
+    const handleAccept = async () => {
+        await handleAppOrders()
         setDoubleModalVisible(false)
+        navigation.navigate("Orders")
     }
 
     const handleCancel = () => {
@@ -91,6 +92,8 @@ const Cart = () => {
     return (
 
         <View style={styles.container}>
+
+            {cart.items.length === 0 && <Text style={styles.emptyCart}>Sin productos en el carro</Text> }
 
             <FlatList
                 data={cart.items}
@@ -154,5 +157,12 @@ const styles = StyleSheet.create({
         fontFamily: fonts.lobsterRegular,
         fontSize: 18,
         color: colors.black
+    },
+    emptyCart: {
+        fontFamily: fonts.lobsterRegular,
+        fontWeight: "400",
+        fontSize: 18,
+        textAlign: "center",
+        top: "35%"
     }
 })

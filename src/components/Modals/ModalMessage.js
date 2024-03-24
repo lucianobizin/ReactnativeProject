@@ -42,7 +42,7 @@ const ModalMessage = ({ text, textButton, onClose, modalVisible, order }) => {
                     {order &&
 
                         <>
-                            <Text style={styles.textTitle}>Fecha de compra: {order.createdAt}</Text>
+                            <Text style={styles.textTitle}>{order.createdAt}</Text>
                             
                             <ScrollView contentContainerStyle={styles.scrollView}>
                                 {order.items.map((item, index) => (
@@ -73,7 +73,7 @@ export default ModalMessage
 const styles = StyleSheet.create({
 
     scrollView: {
-        marginVertical: 10,
+        marginVertical: 5,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -107,22 +107,24 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     text: {
-        fontSize: 20,
+        fontSize: 24,
         color: colors.black,
         fontFamily: fonts.joseginSansBold,
         textAlign: "center"
     },
     textTitle: {
         fontSize: 18,
-        color: colors.blue, // Cambia el color a tu preferencia
-        fontFamily: fonts.joseginSansBold,
+        color: colors.black,
+        fontWeight: "bold",
+        fontFamily: fonts.playFairDisplayRegular,
         textAlign: "center",
         marginVertical: 15
     },
     textTitle3: {
-        fontSize: 18,
+        fontSize: 20,
         color: colors.blue, // Cambia el color a tu preferencia
-        fontFamily: fonts.joseginSansBold,
+        fontFamily: fonts.playFairDisplayRegular,
+        fontWeight: "bold",
         textAlign: "center",
         marginVertical: 15
     }

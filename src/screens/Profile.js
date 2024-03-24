@@ -48,7 +48,7 @@ const Profile = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Image
-                source={data ? { uri: data.image } : require("../../assets/user.png")}
+                source={data?.image ? { uri: data.image } : require("../public/img/user.png")}
                 style={styles.image}
                 resizeMode='cover'
             />
@@ -73,10 +73,7 @@ const styles = StyleSheet.create({
         height: 225,
         borderRadius: 180,
         marginTop: 40,
-        marginBottom: 35
-    },
-    text: {
-
+        marginBottom: 35,
     },
     textTitle: {
         fontSize: 18,

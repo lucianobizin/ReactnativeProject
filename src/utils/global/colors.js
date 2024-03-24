@@ -1,3 +1,4 @@
+// Exporto los colores mediante el objeto colors
 const colors = {
     primary: "#eaa7ad", // Rosa
     secondary: "#a9aaa7", // Gris

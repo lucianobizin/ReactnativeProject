@@ -20,29 +20,29 @@ import Error from '../Errors/Error.js'
 import EmptyComponent from '../EmptyComponent/EmptyComponent.js'
 
 // El componente Categories recibe selectedCategoryState (handler que modifica el estado de categorySelected -setCategorySelected-)
-const Categories = ({ navigation }) => {
+const Categories = ({ navigation, categories }) => {
 
-    // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
-    const { data: categories, isLoading, isError, isSuccess } = useGetCategoriesQuery()
+    // // Obtengo las categorías y las guardo en una constante categories (sobreescribí el nombre data) utilizando useGetCategoriesQuery (ver -> shop.js)
+    // const { data: categories, isLoading, isError, isSuccess } = useGetCategoriesQuery()
 
-    /* -------------------   VALIDACIONES LOǴICAS DE RESPUESTA   ------------------------------------------------------------- */
+    // /* -------------------   VALIDACIONES LOǴICAS DE RESPUESTA   ------------------------------------------------------------- */
 
-    // En caso de que se estén cargando el producto buscado
-    if (isLoading) return (<LoadingSpinner />)
+    // // En caso de que se estén cargando el producto buscado
+    // if (isLoading) return (<LoadingSpinner />)
 
-    // En caso de que se produzca una error
+    // // En caso de que se produzca una error
 
-    const onRetry = () => {
-        navigation.reset({
-            index: 0,
-            routes: [{name: "Home"}],
-        })
-    }
+    // const onRetry = () => {
+    //     navigation.reset({
+    //         index: 0,
+    //         routes: [{name: "Home"}],
+    //     })
+    // }
 
-    if (isError) return <Error message={"Se ha producido un error"} onRetry={onRetry} textButton={"Reiniciar"} />
+    // if (isError) return <Error message={"Se ha producido un error"} onRetry={onRetry} textButton={"Reiniciar"} />
 
-    // En caso de que la petición haya sido exitosa pero no existan categorías
-    if (isSuccess && categories === null) return <EmptyComponent message={"No existen productos"}/>
+    // // En caso de que la petición haya sido exitosa pero no existan categorías
+    // if (isSuccess && categories === null) return <EmptyComponent message={"No existen productos"}/>
 
     // Obtengo los nombres de categoría del objeto categories mapeando la propiedad name (=categoría)
     const categoryNames = Object.values(categories).map(category => category.name)

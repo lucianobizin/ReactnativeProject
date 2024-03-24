@@ -83,7 +83,17 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
         padding: 45,
         gap: 35,
-        borderRadius: 5,
+        borderRadius: 25,
+        // Sombras para Android
+        elevation: 8,
+        // Sombras para iOS
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     buttonContent: {
         flexDirection: "row",
@@ -92,9 +102,10 @@ const styles = StyleSheet.create({
         gap: 30
     },
     text: {
-        fontSize: 16,
+        fontSize: 18,
         color: colors.black,
         fontFamily: fonts.joseginSansBold,
-        textAlign: "center"
+        textAlign: "center",
+        lineHeight: 24
     }
 })

@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker'
 import AddButton from '../components/Buttons/AddButton.js'
 
 // Importo las funciones que desencadena el método GET y PUT para traer y actualizar imágenes
-import { useGetImageQuery, usePutImageMutation } from '../app/services/profile.js'
+import { useGetImageQuery, usePatchImageMutation } from '../app/services/profile.js'
 
 // Importo el useSelector de redux que maneja el estado actualizado del localId
 import { useSelector } from 'react-redux'
@@ -32,7 +32,7 @@ const ImageSelector = ({ navigation }) => {
     const localId = useSelector((state) => state.auth.localId)
 
     // Instancio el trigger que actualizará imágenes
-    const [triggerImage] = usePutImageMutation()
+    const [triggerImage] = usePatchImageMutation()
 
     // Instancio el trigger que traerá imágen
     const { data, isSuccess } = useGetImageQuery(localId)
@@ -93,7 +93,7 @@ const ImageSelector = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Image
-                source={image ? { uri: image } : require("../../assets/user.png")}
+                source={image ? { uri: image } : require("../public/img/user.png")}
                 style={styles.image}
                 resizeMode='cover'
             />

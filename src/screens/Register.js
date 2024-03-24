@@ -75,41 +75,40 @@ const Register = ({ navigation }) => {
         let newErrors = {};
 
         // Validaciones para el campo de nombre
-        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(name.trim())) {
-            newErrors.name = "El nombre no puede estar vacío ni contener caracteres especiales ni números"
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u.test(name.trim())) {
+            newErrors.name = "El nombre no puede estar vacío ni contener caracteres especiales ni números";
         }
 
         // Validaciones para el campo de apellido
-        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(surname.trim())) {
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u.test(surname.trim())) {
             newErrors.surname = "El apellido no puede estar vacío ni contener caracteres especiales ni números";
         }
 
         // Validaciones para el campo de correo electrónico
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
             newErrors.email = "El email debe ser válido";
         }
 
         // Validaciones para el campo de teléfono
-        if (!/^\d{10}$/.test(phone.replace(/-/g, ''))) {
+        if (!/^\d{10}$/.test((phone.trim()).replace(/-/g, ''))) {
             newErrors.phone = "El teléfono debe contener exactamente 10 dígitos numéricos";
         }
 
         // Validaciones para el campo de número de identificación
-        if (!/^\d+$/.test(idNumber.replace(/\D/g, ''))) {
+        if (!/^\d+$/.test(idNumber.trim())) {
             newErrors.idNumber = "El número de identificación debe contener solo números";
         }
 
         // Validaciones para el campo de dirección
-        if (!/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/.test(address.trim())) {
+        if (!/^[a-zA-Z0-9º\s,.]*[a-zA-Z][a-zA-Z0-9º\s,.]*$/.test(address.trim())) {
             newErrors.address = "La dirección no debe contener caracteres especiales ni estar vacía";
         }
         // Validaciones para el campo de provincia
-        if (!/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/.test(province.trim())) {
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u.test(province.trim())) {
             newErrors.province = "La provincia no debe contener caracteres especiales ni estar vacía";
         }
         // Validaciones para la contraseña
         if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()+]).{6,}/.test(password)) {
-            console.log(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*+()]).{6,}/.test(password))
             newErrors.password = "La contraseña debe contener al menos una mayúscula, una minúscula, un caracter especial y un número, y tener al menos 6 caracteres";
         }
         // Validación de que confirmedPassword sea igual a password
@@ -120,6 +119,8 @@ const Register = ({ navigation }) => {
         // Retorno el diccionario con los errores
         setNewErrors(newErrors)
 
+        return Object.keys(newErrors).length === 0;
+
     }
 
     // Declaro la función que dispara el registro del usuario con los datos del formulario
@@ -128,7 +129,9 @@ const Register = ({ navigation }) => {
 
         try {
 
-            await validateFields()
+            // Validamos los campos de los inputs (en caso de error, se pasa a InputForm como error y se visualiza un cartel en rojo debajo de la variable)
+            const isValid = validateFields();
+            if (!isValid) return;
 
             // Ejecuta la función que envía los datos del usuario que se quiere registrar a la base de datos
             // Recibe data como respuesta, la cual posee el token de autenticación que se debe actualizar en el estado de authSlice
@@ -136,9 +139,9 @@ const Register = ({ navigation }) => {
 
             const { data, error } = await triggerRegister({ name, surname, email, phone, idNumber, address, province, password, confirmedPassword })
 
+            // En caso de recibir un error 400 o un error (500) de fetch
             if (error) {
-                console.log(error.data.error.message)
-                setTextMessage(error?.data?.error?.message)
+                setTextMessage(error?.data?.error?.message ? error?.data?.error?.message : error?.status)
                 setModalVisible(true)
             }
 
@@ -370,7 +373,7 @@ const styles = StyleSheet.create({
     footerText: {
         color: colors.tertiary,
         fontSize: 16,
-        fontFamily: fonts.josefinSansBold,
+        fontFamily: fonts.playFairDisplayRegular,
         fontWeight: "bold",
 
     },

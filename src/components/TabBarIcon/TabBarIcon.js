@@ -37,7 +37,7 @@ export default TabBarIcon
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: colors.secondary,
+        backgroundColor: colors.primary,
         alignItems: "center"
     },
     textFocused: {

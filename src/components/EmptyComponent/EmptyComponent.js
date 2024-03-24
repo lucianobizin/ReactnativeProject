@@ -1,6 +1,9 @@
 // Importo componentes generales de react-native
 import { StyleSheet, Text, View } from 'react-native'
 
+// Importo las fuentes de la app
+import fonts from '../../utils/global/fonts'
+
 const EmptyComponent = ({ message }) => {
 
     /* -------------------   RENDERIZACIÓN DE COMPONENTE VACÍO --------------------------------------------------------------------- */
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
     errorMessage: {
         fontSize: 18,
         marginBottom: 20,
+        fontFamily: fonts.lobsterRegular,
         textAlign: "center"
     }
 })

@@ -4,10 +4,6 @@ import colors from '../../utils/global/colors'
 
 const OrderDetail = ({ item }) => {
 
-    useEffect(() => {
-        console.log(item)
-    }, [item])
-
     return (
         <>
 
@@ -35,11 +31,12 @@ export default OrderDetail
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         flexDirection: "row",
         position: "relative",
         backgroundColor: colors.white,
         padding: 20,
-        margin: 10,
+        marginVertical: 10,
         borderWidth: 2,
         borderRadius: 10,
         borderColor: colors.white,
@@ -58,9 +55,9 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
     },
     imageSpan: {
-        width: 50,
-        height: 50,
-        marginRight: 15,
+        width: 75,
+        height: 65,
+        marginRight: 5,
         position: 'relative',
         overflow: 'hidden',
         borderRadius: 5,
