@@ -4,10 +4,6 @@
 .vscode/
 launch.json
 
-# config
-.config/
-config.js
-
 # dependencies
 node_modules/
 
