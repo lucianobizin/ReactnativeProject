@@ -45,7 +45,7 @@ const ModalMessage = ({ text, textButton, onClose, modalVisible, order }) => {
                             <Text style={styles.textTitle}>{order.createdAt}</Text>
                             
                             <ScrollView contentContainerStyle={styles.scrollView}>
-                                {order.items.map((item, index) => (
+                                {order.items && order.items.map((item, index) => (
                                     <View key={index}>
                                         <OrderDetail item={item} />
                                     </View>

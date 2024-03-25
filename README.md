@@ -235,13 +235,17 @@ A continuación se detallan algunas funcionalidades que podrían implementarse e
 
 - **Ciberseguridad:** Reforzar la ciberseguridad de la aplicación para garantizar la protección de los datos de los usuarios. Esto implica realizar auditorías de seguridad periódicas, implementar medidas de protección de datos y mantenerse al día con las mejores prácticas de seguridad en el desarrollo de aplicaciones móviles.
 
+## Firebase
+
+### Configuración de rules de Firebase
+
+<img src="./src/public/img/Firebase_Rules.png" alt="Descripción de la imagen">
+
 ## Estilos de la app
 
 ### Paleta de colores
 
-![Paleta de colores](./public/img/Captura%20desde%202024-02-02%2017-04-31.png)
-
-URL: https://imagecolorpicker.com/en/user/shared-palette?id=33c9d688-ad30-4c25-8601-c1b309dcf6bd
+<img src="./src/public/img/paleta_de_colores.png" alt="Paleta de colores de la app">
 
 --> *CSS de izquierda a derecha*
 

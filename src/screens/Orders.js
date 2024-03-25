@@ -12,7 +12,8 @@ import { useSelector } from 'react-redux'
 
 // Importo la función que desencadena la petición GET de las órdenes de un usuario (ver -> localId)
 import { useGetOrdersQuery } from '../app/services/orders.js'
-import { useEffect } from 'react'
+
+// Import los colores de la app
 import colors from '../utils/global/colors.js'
 
 
@@ -31,7 +32,7 @@ const Orders = () => {
     if (isError) return <Error message={"Se ha producido un error"} onRetry={() => navigation.goBack()} textButton={"Volver"} />
 
     // En caso de que la petición haya sido exitosa pero no existan categorías
-    if (isSuccess && orders.length === 0) return <EmptyComponent message={"No existen categorías"} />
+    if (isSuccess && orders.length === 0) return <EmptyComponent message={"No existen órdenes todavía"} />
 
 
 

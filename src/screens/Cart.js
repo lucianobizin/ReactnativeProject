@@ -67,7 +67,7 @@ const Cart = ({navigation}) => {
     const handleAccept = async () => {
         await handleAppOrders()
         setDoubleModalVisible(false)
-        navigation.navigate("Orders")
+        navigation.navigate("OrdersStack")
     }
 
     const handleCancel = () => {
@@ -103,9 +103,12 @@ const Cart = ({navigation}) => {
 
             <View style={styles.confirmContainer}>
                 <Text style={styles.confirmText}> Total: $ {cart.total.toFixed(2)}</Text>
+                
+                {cart.items.length !== 0 &&
                 <Pressable style={styles.pressableButton} onPress={handleAddToCart}>
-                    <Text style={styles.confirmText}>Comprar</Text>
+                 <Text style={styles.confirmText}>Comprar</Text>
                 </Pressable>
+                }
 
             </View>
 

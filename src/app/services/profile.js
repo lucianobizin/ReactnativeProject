@@ -40,14 +40,14 @@ export const profileApi = createApi({
         }),
         patchUserLocation: builder.mutation({
             query: ({localId, locationFormatted}) => ({
-                url: `/userLocation/${localId}.json`,
+                url: `/profile/${localId}/userLocation.json`,
                 method: "PATCH",
                 body: locationFormatted
             }),
             invalidatesTags: ["userLocation"]
         }),
         getUserLocation: builder.query({
-          query: (localId) => (`/userLocation/${localId}.json`),
+          query: (localId) => (`/profile/${localId}/userLocation.json`),
           providesTags: ["userLocation"]
         })
 
